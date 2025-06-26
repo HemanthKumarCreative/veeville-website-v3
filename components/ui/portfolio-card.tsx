@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { PortfolioItem } from "@/app/work/types";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 interface PortfolioCardProps {
   item: PortfolioItem;
@@ -9,6 +10,21 @@ interface PortfolioCardProps {
 }
 
 const PortfolioCard: React.FC<PortfolioCardProps> = ({ item, className }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const pathname = usePathname();
+
+  // Reset visibility state when route changes
+  useEffect(() => {
+    setIsVisible(false);
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, [pathname]);
+
+  // Set visible when component mounts
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
   return (
     <motion.div
       className={cn(
@@ -16,7 +32,11 @@ const PortfolioCard: React.FC<PortfolioCardProps> = ({ item, className }) => {
         className
       )}
       initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      animate={{ 
+        opacity: isVisible ? 1 : 0, 
+        y: isVisible ? 0 : 20 
+      }}
+      exit={{ opacity: 0, y: 20 }}
       viewport={{ once: true }}
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.3 }}
@@ -24,13 +44,15 @@ const PortfolioCard: React.FC<PortfolioCardProps> = ({ item, className }) => {
       <div
         role="button"
         tabIndex={0}
-        onClick={() => {}}
+        onClick={() => {
+          // Handle navigation if needed
+        }}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             // Handle navigation
           }
         }}
-        className="relative h-full w-full cursor-pointer overflow-hidden"
+        className="relative h-full w-full cursor-pointer overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded-lg"
         aria-label={`View details of ${item.title}`}
       >
         <motion.img
