@@ -1,16 +1,16 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Montserrat } from "next/font/google"
-import "./globals.css"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { ThemeProvider } from "@/components/theme-provider"
+import type React from "react";
+import type { Metadata } from "next";
+import { Montserrat } from "next/font/google";
+import "./globals.css";
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
+import RouteTransition from "@/components/route-transition";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
   display: "swap",
   fallback: ["Helvetica", "Arial", "sans-serif"],
-})
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://yourwebsite.com"),
@@ -20,7 +20,13 @@ export const metadata: Metadata = {
   },
   description:
     "Discover excellence with our innovative solutions. We provide top-tier services and products designed to elevate your business to new heights.",
-  keywords: ["business solutions", "innovation", "excellence", "professional services", "technology"],
+  keywords: [
+    "business solutions",
+    "innovation",
+    "excellence",
+    "professional services",
+    "technology",
+  ],
   authors: [{ name: "Your Company Team" }],
   creator: "Your Company",
   publisher: "Your Company",
@@ -66,21 +72,35 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://yourwebsite.com",
   },
-    generator: 'v0.dev'
-}
+  generator: "v0.dev",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#000000" />
         <script
@@ -118,14 +138,14 @@ export default function RootLayout({
         />
       </head>
       <body className={montserrat.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
+        <div className="flex min-h-screen flex-col">
+          <Navbar />
+          <RouteTransition>
             <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+          </RouteTransition>
+          <Footer />
+        </div>
       </body>
     </html>
-  )
+  );
 }

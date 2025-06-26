@@ -1,22 +1,23 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const navigation = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
-]
+  { name: "WORK", href: "/work" },
+  { name: "CLIENTS", href: "/clients" },
+  { name: "ABOUT", href: "/about" },
+  { name: "CONTACT", href: "/contact" },
+];
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const pathname = usePathname()
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -25,31 +26,30 @@ export function Navbar() {
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="flex items-center">
-          <Link href="/" className="flex items-center space-x-2" aria-label="Your Company Home">
-            <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">YC</span>
+        <div className="w-36 sm:w-40 lg:w-48 transition-transform duration-300 ease-in-out hover:scale-105">
+          <Link href="/" aria-label="Veeville Home">
+            <div className="col-span-2 md:col-span-1">
+              <p className="text-[#848688] italic font-['Georgia'] text-[36px] leading-relaxed">
+                Veeville.
+              </p>
             </div>
-            <span className="font-bold text-xl">Your Company</span>
           </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex md:flex-row items-center space-x-8">
           {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
-                pathname === item.href ? "text-primary" : "text-muted-foreground",
-              )}
-              aria-current={pathname === item.href ? "page" : undefined}
-            >
-              {item.name}
-            </Link>
+            <div key={item.name} className="group flex items-center gap-3">
+              <Link
+                href={item.href}
+                className="nav-link text-md text-[#848688] group-hover:text-[#f05847] transition-all duration-300 font-medium relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-[#f05847] after:left-0 after:-bottom-0.5 after:transition-all after:duration-300 group-hover:after:w-full hover:cursor-none"
+                aria-current={pathname === item.href ? "page" : undefined}
+              >
+                {item.name}
+              </Link>
+            </div>
           ))}
-        </div>
+        </nav>
 
         {/* Mobile Navigation */}
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -59,25 +59,23 @@ export function Navbar() {
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-            <div className="flex flex-col space-y-4 mt-8">
+            <nav className="flex flex-col items-start space-y-2 mt-8">
               {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={cn(
-                    "text-lg font-medium transition-colors hover:text-primary",
-                    pathname === item.href ? "text-primary" : "text-muted-foreground",
-                  )}
-                  onClick={() => setIsOpen(false)}
-                  aria-current={pathname === item.href ? "page" : undefined}
-                >
-                  {item.name}
-                </Link>
+                <div key={item.name} className="group flex items-center gap-3">
+                  <Link
+                    href={item.href}
+                    className="nav-link text-md text-[#848688] group-hover:text-[#f05847] transition-all duration-300 font-medium relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-[#f05847] after:left-0 after:-bottom-0.5 after:transition-all after:duration-300 group-hover:after:w-full hover:cursor-none"
+                    onClick={() => setIsOpen(false)}
+                    aria-current={pathname === item.href ? "page" : undefined}
+                  >
+                    {item.name}
+                  </Link>
+                </div>
               ))}
-            </div>
+            </nav>
           </SheetContent>
         </Sheet>
       </nav>
     </header>
-  )
+  );
 }
