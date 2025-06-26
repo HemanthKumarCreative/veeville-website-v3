@@ -1,5 +1,12 @@
 import Image from "next/image";
-import { metadata, teamMembers, services, aboutContent } from "@/content/about";
+import {
+  metadata,
+  teamMembers,
+  services,
+  aboutContent,
+  aboutUsFlipImages,
+} from "@/content/about";
+import { ImageFlipper } from "@/components/ui/image-flipper";
 
 export { metadata };
 
@@ -7,14 +14,12 @@ export default function AboutPage() {
   return (
     <>
       <div className="w-full">
-        <Image
-          src={aboutContent.banner.image}
-          alt={aboutContent.banner.alt}
-          className="object-contain w-full h-auto"
-          width={100}
-          height={100}
-          priority
-        />
+        <div className="max-w-full">
+          <ImageFlipper
+            aboutUsFlipImages={aboutUsFlipImages}
+            className="w-full"
+          />
+        </div>
       </div>
 
       <section className="py-16 px-5 bg-white">
