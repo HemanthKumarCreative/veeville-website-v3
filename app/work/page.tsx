@@ -10,11 +10,18 @@ import PortfolioGrid from "@/components/ui/portfolio-grid";
 import { slides, tabs, portfolioItems } from "./data";
 
 export default function WorkPage() {
-  // State
+  // State - Always start with first tab
   const [activeTab, setActiveTab] = useState("Spotlighted");
+  const [isPageLoaded, setIsPageLoaded] = useState(false);
   const pathname = usePathname();
 
-  // Reset state when component mounts or route changes
+  // Initialize page state on mount (page load)
+  useEffect(() => {
+    setActiveTab("Spotlighted");
+    setIsPageLoaded(true);
+  }, []);
+
+  // Reset state when route changes
   useEffect(() => {
     setActiveTab("Spotlighted");
   }, [pathname]);
@@ -29,24 +36,38 @@ export default function WorkPage() {
     return () => {
       // Cleanup function to ensure no memory leaks
       setActiveTab("Spotlighted");
+      setIsPageLoaded(false);
     };
   }, []);
 
+  // Don't render until page is properly loaded and initialized
+  if (!isPageLoaded) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <div className="text-gray-500">Loading...</div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen">
-      {/* Carousel */}
-      <DesignCarousel slides={slides} />
+      {/* Carousel - Will always start from first slide */}
+      <DesignCarousel slides={slides} key={`carousel-${pathname}`} />
 
-      {/* Tab Filter */}
+      {/* Tab Filter - Will always start with first tab */}
       <TabFilter
         tabs={tabs}
         activeTab={activeTab}
         onTabChange={handleTabClick}
+        key={`tabs-${pathname}`}
       />
 
       {/* Portfolio Section */}
       <section className="container mx-auto px-4 py-10">
-        <PortfolioGrid items={portfolioItems[activeTab] || []} />
+        <PortfolioGrid 
+          items={portfolioItems[activeTab] || []} 
+          key={`portfolio-${activeTab}-${pathname}`}
+        />
       </section>
     </main>
   );

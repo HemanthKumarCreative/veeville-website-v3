@@ -13,28 +13,35 @@ interface DesignCarouselProps {
 
 const DesignCarousel: React.FC<DesignCarouselProps> = ({ slides }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isInitialized, setIsInitialized] = useState(false);
   const pathname = usePathname();
 
-  // Reset carousel state when component mounts or route changes
+  // Always start from first slide on component mount (page load)
+  useEffect(() => {
+    setCurrentSlide(0);
+    setIsInitialized(true);
+  }, []);
+
+  // Reset carousel state when route changes
   useEffect(() => {
     setCurrentSlide(0);
   }, [pathname]);
 
-  // Auto-advance carousel
+  // Reset to first slide when slides array changes
   useEffect(() => {
-    if (slides.length <= 1) return;
+    setCurrentSlide(0);
+  }, [slides]);
+
+  // Auto-advance carousel only after initialization
+  useEffect(() => {
+    if (!isInitialized || slides.length <= 1) return;
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [slides.length]);
-
-  // Reset to first slide when slides array changes
-  useEffect(() => {
-    setCurrentSlide(0);
-  }, [slides]);
+  }, [slides.length, isInitialized]);
 
   // Handle manual slide navigation
   const goToSlide = (index: number) => {
@@ -57,7 +64,7 @@ const DesignCarousel: React.FC<DesignCarouselProps> = ({ slides }) => {
       >
         {slides.map((slide, index) => (
           <div
-            key={`${index}-${slide.image}`} // Unique key to force re-render on slides change
+            key={`slide-${index}-${slide.image}`} // Unique key to force re-render
             className="relative w-full flex-shrink-0 flex justify-center items-center"
             style={{ minHeight: "inherit" }}
           >
