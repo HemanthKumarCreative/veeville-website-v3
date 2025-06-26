@@ -104,48 +104,21 @@ body {
   }
 }
 
-/* Enhanced glassmorphism and backdrop blur support */
-@supports (backdrop-filter: blur(0)) {
-  .backdrop-blur-xl {
-    backdrop-filter: blur(24px);
-  }
-  .backdrop-blur-sm {
-    backdrop-filter: blur(4px);
-  }
-}
-
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
 }
 
-/* Enhanced focus styles for accessibility */
+/* Enhanced backdrop blur support */
+@supports (backdrop-filter: blur(0)) {
+  .backdrop-blur-md {
+    backdrop-filter: blur(12px);
+  }
+}
+
+/* Focus styles for better accessibility */
 @layer components {
-  .focus-visible\:ring-enhanced {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2 focus-visible:ring-offset-white;
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2;
   }
-}
-
-/* Custom gradient animations */
-@keyframes gradient-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradient-shift 3s ease infinite;
-}
-
-/* Enhanced shadow utilities */
-.shadow-glow {
-  box-shadow: 0 0 20px rgba(240, 88, 71, 0.3);
-}
-
-.shadow-glow-lg {
-  box-shadow: 0 0 40px rgba(240, 88, 71, 0.4);
 }
