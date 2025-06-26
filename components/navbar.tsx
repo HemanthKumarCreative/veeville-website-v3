@@ -6,10 +6,9 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const navigation = [
-  { name: "WORK", href: "/work" },
+  { name: "MARKETING", href: "/work" },
   { name: "CLIENTS", href: "/clients" },
   { name: "ABOUT", href: "/about" },
   { name: "CONTACT", href: "/contact" },

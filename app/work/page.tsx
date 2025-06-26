@@ -1,71 +1,43 @@
-import type { Metadata } from "next";
-import { workContent } from "@/content/work";
+"use client";
 
-export const metadata: Metadata = {
-  title: workContent.seo.title,
-  description: workContent.seo.description,
-  openGraph: {
-    title: workContent.seo.title,
-    description: workContent.seo.description,
-    url: workContent.seo.url,
-  },
-  alternates: {
-    canonical: workContent.seo.url,
-  },
-};
+import React, { useState, useEffect } from "react";
+import DesignCarousel from "@/components/ui/design-carousel";
+import TabFilter from "@/components/ui/tab-filter";
+import PortfolioGrid from "@/components/ui/portfolio-grid";
+// import SectionHeader from "@/components/ui/section-header";
+
+// Import your data
+import { slides, tabs, portfolioItems } from "./data";
 
 export default function WorkPage() {
+  // State
+  const [activeTab, setActiveTab] = useState("Spotlighted");
+
+  // Event handlers
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+  };
+
   return (
-    <div className="w-full">
-      {/* Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": workContent.schema.page.type,
-            name: workContent.schema.page.name,
-            description: workContent.schema.page.description,
-            url: workContent.schema.page.url,
-            mainEntity: {
-              "@type": workContent.schema.organization.type,
-              name: workContent.schema.organization.name,
-              description: workContent.schema.organization.description,
-            },
-          }),
-        }}
+    <main className="min-h-screen">
+      {/* Carousel */}
+      <DesignCarousel slides={slides} />
+
+      {/* Tab Filter */}
+      <TabFilter
+        tabs={tabs}
+        activeTab={activeTab}
+        onTabChange={handleTabClick}
       />
 
       {/* Portfolio Section */}
-      <section className="w-full py-16">
-        <div className="max-w-[1400px] mx-auto px-5">
-          <h1 className="text-4xl font-bold mb-6">
-            {workContent.portfolio.title}
-          </h1>
-          <p className="text-lg text-gray-700 mb-12">
-            {workContent.portfolio.description}
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {workContent.portfolio.projects.map((project, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg shadow-lg overflow-hidden"
-              >
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                  <p className="text-gray-600">{project.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <section className="container mx-auto px-4 py-10">
+        {/* <SectionHeader
+          title={SECTION_TITLES.PORTFOLIO.main}
+          description={SECTION_TITLES.PORTFOLIO.description}
+        /> */}
+        <PortfolioGrid items={portfolioItems[activeTab]} />
       </section>
-    </div>
+    </main>
   );
 }
