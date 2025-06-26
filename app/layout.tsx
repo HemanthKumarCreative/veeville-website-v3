@@ -5,6 +5,7 @@ import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import RouteTransition from "@/components/route-transition";
+import { Toaster } from "@/components/ui/toaster";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -144,6 +145,7 @@ export default function RootLayout({
             <main className="flex-1">{children}</main>
           </RouteTransition>
           <Footer />
+          <Toaster />
         </div>
       </body>
     </html>
