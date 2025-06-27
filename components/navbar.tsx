@@ -130,24 +130,38 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8" aria-label="Primary navigation">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={cn(
-                  "relative text-sm font-medium tracking-wide transition-all duration-200",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2 rounded-sm",
-                  "after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:w-0 after:bg-[#f05847] after:transition-all after:duration-200",
-                  "hover:after:w-full hover:scale-105",
-                  pathname === item.href 
-                    ? "text-[#f05847] after:w-full" 
-                    : "text-[#848688] hover:text-[#f05847]"
-                )}
-                aria-current={pathname === item.href ? "page" : undefined}
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navigation.map((item) => {
+              const isCurrentPage = pathname === item.href;
+              
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    "relative px-3 py-2 text-sm font-medium tracking-wide transition-all duration-200 rounded-md",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2",
+                    
+                    // Current page styles (solid background + underline)
+                    isCurrentPage && [
+                      "text-white bg-[#f05847]",
+                      "after:absolute after:bottom-[-2px] after:left-1/2 after:transform after:-translate-x-1/2",
+                      "after:w-6 after:h-0.5 after:bg-white after:rounded-full"
+                    ],
+                    
+                    // Non-current page styles
+                    !isCurrentPage && [
+                      "text-[#848688]",
+                      // Hover styles (subtle background + color change)
+                      "hover:text-[#f05847] hover:bg-[#f05847]/10",
+                      "hover:scale-105 hover:shadow-sm"
+                    ]
+                  )}
+                  aria-current={isCurrentPage ? "page" : undefined}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -180,25 +194,39 @@ export function Navbar() {
                 
                 {/* Mobile Navigation */}
                 <nav className="flex-1 px-6 py-6" aria-label="Mobile navigation">
-                  <ul className="space-y-2">
-                    {navigation.map((item) => (
-                      <li key={item.name}>
-                        <Link
-                          href={item.href}
-                          className={cn(
-                            "block px-4 py-3 text-base font-medium rounded-lg transition-all duration-200",
-                            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2",
-                            pathname === item.href 
-                              ? "text-[#f05847] bg-[#f05847]/10 border border-[#f05847]/20" 
-                              : "text-[#848688] hover:text-[#f05847] hover:bg-gray-50"
-                          )}
-                          onClick={() => setIsOpen(false)}
-                          aria-current={pathname === item.href ? "page" : undefined}
-                        >
-                          {item.name}
-                        </Link>
-                      </li>
-                    ))}
+                  <ul className="space-y-3">
+                    {navigation.map((item) => {
+                      const isCurrentPage = pathname === item.href;
+                      
+                      return (
+                        <li key={item.name}>
+                          <Link
+                            href={item.href}
+                            className={cn(
+                              "block px-4 py-3 text-base font-medium rounded-lg transition-all duration-200",
+                              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2",
+                              
+                              // Current page styles (solid background)
+                              isCurrentPage && [
+                                "text-white bg-[#f05847] shadow-md",
+                                "border-l-4 border-l-white"
+                              ],
+                              
+                              // Non-current page styles
+                              !isCurrentPage && [
+                                "text-[#848688]",
+                                "hover:text-[#f05847] hover:bg-[#f05847]/10",
+                                "hover:border-l-4 hover:border-l-[#f05847]/30"
+                              ]
+                            )}
+                            onClick={() => setIsOpen(false)}
+                            aria-current={isCurrentPage ? "page" : undefined}
+                          >
+                            {item.name}
+                          </Link>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </nav>
               </div>
