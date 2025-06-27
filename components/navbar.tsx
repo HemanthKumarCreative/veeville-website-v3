@@ -141,15 +141,14 @@ export function Navbar() {
                     "relative text-sm font-medium tracking-wide transition-all duration-200",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2 rounded-sm",
                     
-                    // Current page styles (solid red background + white underline)
+                    // Current page styles (red text + solid underline)
                     isCurrentPage ? [
-                      "text-white bg-[#f05847] px-3 py-2 rounded-md",
-                      "after:absolute after:bottom-[-2px] after:left-1/2 after:transform after:-translate-x-1/2",
-                      "after:w-6 after:h-0.5 after:bg-white after:rounded-full"
+                      "text-[#f05847]",
+                      "after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:w-full after:bg-[#f05847] after:rounded-full"
                     ] : [
-                      // Non-current page styles (clean with underline hover)
+                      // Non-current page styles (gray text + animated underline on hover)
                       "text-[#848688] hover:text-[#f05847] hover:scale-105",
-                      "after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:w-0 after:bg-[#f05847] after:transition-all after:duration-200",
+                      "after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:w-0 after:bg-[#f05847] after:transition-all after:duration-200 after:rounded-full",
                       "hover:after:w-full"
                     ]
                   )}
@@ -203,10 +202,10 @@ export function Navbar() {
                               "block px-4 py-3 text-base font-medium rounded-lg transition-all duration-200",
                               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2",
                               
-                              // Current page styles (solid background)
+                              // Current page styles (red text + left border)
                               isCurrentPage ? [
-                                "text-white bg-[#f05847] shadow-md",
-                                "border-l-4 border-l-white"
+                                "text-[#f05847] bg-[#f05847]/10",
+                                "border-l-4 border-l-[#f05847]"
                               ] : [
                                 // Non-current page styles (clean hover)
                                 "text-[#848688]",
