@@ -116,7 +116,7 @@ html {
   }
 }
 
-/* Ensure navbar is always visible with proper contrast */
+/* Ensure navbar transitions are smooth and performant */
 @layer components {
   .navbar-glass {
     background: rgba(255, 255, 255, 0.9);
@@ -130,4 +130,30 @@ html {
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
     border-bottom: 1px solid rgba(229, 231, 235, 1);
   }
+
+  /* Smooth navbar animations */
+  .navbar-transition {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                background-color 0.3s ease,
+                box-shadow 0.3s ease,
+                border-color 0.3s ease;
+    will-change: transform, opacity;
+  }
+}
+
+/* Optimize performance for navbar animations */
+@media (prefers-reduced-motion: no-preference) {
+  .navbar-transition {
+    transform: translateZ(0); /* Force hardware acceleration */
+  }
+}
+
+/* Ensure hover zone doesn't interfere with page content */
+.navbar-hover-zone {
+  pointer-events: auto;
+}
+
+.navbar-hover-zone:not(:hover) {
+  pointer-events: none;
 }
