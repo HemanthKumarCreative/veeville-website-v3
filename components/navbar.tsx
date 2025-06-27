@@ -141,10 +141,9 @@ export function Navbar() {
                     "relative text-sm font-medium tracking-wide transition-all duration-200",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2 rounded-sm",
                     
-                    // Current page styles (red text + solid underline)
+                    // Current page styles (red text only - no underline)
                     isCurrentPage ? [
-                      "text-[#f05847]",
-                      "after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:w-full after:bg-[#f05847] after:rounded-full"
+                      "text-[#f05847]"
                     ] : [
                       // Non-current page styles (gray text + animated underline on hover)
                       "text-[#848688] hover:text-[#f05847] hover:scale-105",
