@@ -138,22 +138,19 @@ export function Navbar() {
                   key={item.name}
                   href={item.href}
                   className={cn(
-                    "relative px-3 py-2 text-sm font-medium tracking-wide transition-all duration-200 rounded-md",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2",
+                    "relative text-sm font-medium tracking-wide transition-all duration-200",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2 rounded-sm",
                     
-                    // Current page styles (solid background + underline)
-                    isCurrentPage && [
-                      "text-white bg-[#f05847]",
+                    // Current page styles (solid red background + white underline)
+                    isCurrentPage ? [
+                      "text-white bg-[#f05847] px-3 py-2 rounded-md",
                       "after:absolute after:bottom-[-2px] after:left-1/2 after:transform after:-translate-x-1/2",
                       "after:w-6 after:h-0.5 after:bg-white after:rounded-full"
-                    ],
-                    
-                    // Non-current page styles
-                    !isCurrentPage && [
-                      "text-[#848688]",
-                      // Hover styles (subtle background + color change)
-                      "hover:text-[#f05847] hover:bg-[#f05847]/10",
-                      "hover:scale-105 hover:shadow-sm"
+                    ] : [
+                      // Non-current page styles (clean with underline hover)
+                      "text-[#848688] hover:text-[#f05847] hover:scale-105",
+                      "after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:w-0 after:bg-[#f05847] after:transition-all after:duration-200",
+                      "hover:after:w-full"
                     ]
                   )}
                   aria-current={isCurrentPage ? "page" : undefined}
@@ -194,7 +191,7 @@ export function Navbar() {
                 
                 {/* Mobile Navigation */}
                 <nav className="flex-1 px-6 py-6" aria-label="Mobile navigation">
-                  <ul className="space-y-3">
+                  <ul className="space-y-2">
                     {navigation.map((item) => {
                       const isCurrentPage = pathname === item.href;
                       
@@ -207,16 +204,13 @@ export function Navbar() {
                               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2",
                               
                               // Current page styles (solid background)
-                              isCurrentPage && [
+                              isCurrentPage ? [
                                 "text-white bg-[#f05847] shadow-md",
                                 "border-l-4 border-l-white"
-                              ],
-                              
-                              // Non-current page styles
-                              !isCurrentPage && [
+                              ] : [
+                                // Non-current page styles (clean hover)
                                 "text-[#848688]",
-                                "hover:text-[#f05847] hover:bg-[#f05847]/10",
-                                "hover:border-l-4 hover:border-l-[#f05847]/30"
+                                "hover:text-[#f05847] hover:bg-gray-50"
                               ]
                             )}
                             onClick={() => setIsOpen(false)}
