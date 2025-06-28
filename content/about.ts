@@ -216,73 +216,7 @@ export const aboutUsFlipImages = {
         image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/06_Ver+1.webp",
         alt: "Version 1 - 06"
       },
-      r1: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/08_Ver+1.webp",
-        alt: "Version 1 - 08"
-      },
-      r2: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/09_Ver+1.webp",
-        alt: "Version 1 - 09"
-      },
-      r3: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/10_Ver+1.webp",
-        alt: "Version 1 - 10"
-      }
-    },
-    version2: {
-      l1: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/1_Ver+2.webp",
-        alt: "Version 2 - 01"
-      },
-      l2: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/2_Ver+2.webp",
-        alt: "Version 2 - 02"
-      },
-      l3: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/3_Ver+2.webp",
-        alt: "Version 2 - 03"
-      },
-      m1: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/5_Ver+2.webp",
-        alt: "Version 2 - 05"
-      },
-      m2: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/6_Ver+2.webp",
-        alt: "Version 2 - 06"
-      },
-      r1: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/8_Ver+2.webp",
-        alt: "Version 2 - 08"
-      },
-      r2: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/9_Ver+2.webp",
-        alt: "Version 2 - 09"
-      },
-      r3: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/10_Ver+2.webp",
-        alt: "Version 2 - 10"
-      }
-    }
-  },
-  u2: {
-    version1: {
-      l1: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/01_Ver+1.webp",
-        alt: "Version 1 - 01"
-      },
-      l2: {
-          image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/02_Ver+1.webp",
-          alt: "Version 1 - 02"
-      },
-      l3: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/03_Ver+1.webp",
-        alt: "Version 1 - 03"
-      },
-      m1: {
-        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/05_Ver+1.webp",
-        alt: "Version 1 - 05"
-      },
-      m2: {
+      m3: {
         image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/06_Ver+1.webp",
         alt: "Version 1 - 06"
       },
@@ -320,6 +254,10 @@ export const aboutUsFlipImages = {
         image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/6_Ver+2.webp",
         alt: "Version 2 - 06"
       },
+      m3: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/6_Ver+2.webp",
+        alt: "Version 2 - 06"
+      },
       r1: {
         image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/8_Ver+2.webp",
         alt: "Version 2 - 08"
@@ -330,6 +268,84 @@ export const aboutUsFlipImages = {
       },
       r3: {
         image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/10_Ver+2.webp",
+        alt: "Version 2 - 10"
+      }
+    }
+  },
+  u2: {
+    version1: {
+      l1: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/16_Ver+1.webp",
+        alt: "Version 1 - 01"
+      },
+      l2: {
+          image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/17_Ver+1.webp",
+          alt: "Version 1 - 02"
+      },
+      l3: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/18_Ver+1.webp",
+        alt: "Version 1 - 03"
+      },
+      m1: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/20_Ver+1.webp",
+        alt: "Version 1 - 05"
+      },
+      m2: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/21_Ver+1.webp",
+        alt: "Version 1 - 06"
+      },
+      m3: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/23_Ver+1.webp",
+        alt: "Version 1 - 06"
+      },
+      r1: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/25_Ver+1.webp",
+        alt: "Version 1 - 08"
+      },
+      r2: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/26_Ver+1.webp",
+        alt: "Version 1 - 09"
+      },
+      r3: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/27_Ver+1.webp",
+        alt: "Version 1 - 10"
+      }
+    },
+    version2: {
+      l1: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/16_Ver+2.webp",
+        alt: "Version 2 - 01"
+      },
+      l2: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/17_Ver+2.webp",
+        alt: "Version 2 - 02"
+      },
+      l3: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/18_Ver+2.webp",
+        alt: "Version 2 - 03"
+      },
+      m1: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/20_Ver+2.webp",
+        alt: "Version 2 - 05"
+      },
+      m2: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/21_Ver+2.webp",
+        alt: "Version 2 - 06"
+      },
+      m3: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/23_Ver+2.webp",
+        alt: "Version 2 - 06"
+      },
+      r1: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/25_Ver+2.webp",
+        alt: "Version 2 - 08"
+      },
+      r2: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/26_Ver+2.webp",
+        alt: "Version 2 - 09"
+      },
+      r3: {
+        image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/27_Ver+2.webp",
         alt: "Version 2 - 10"
       }
     }
