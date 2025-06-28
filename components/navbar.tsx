@@ -100,7 +100,7 @@ export function Navbar() {
       
       <header 
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out pointer-events-none",
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out pointer-events-none w-full",
           // Visibility based on state
           isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0",
           // Background styling
@@ -111,7 +111,7 @@ export function Navbar() {
         onMouseLeave={handleMouseLeave}
       >
         <nav
-          className="mx-auto max-w-7xl flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 pointer-events-auto"
+          className="w-full flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 pointer-events-auto"
           role="navigation"
           aria-label="Main navigation"
         >
