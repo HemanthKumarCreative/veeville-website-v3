@@ -478,6 +478,7 @@ export function ImageFlipper({
 }: ImageFlipperProps) {
   const { u1, u2, seven, linear } = aboutUsFlipImages;
   const [animationType, setAnimationType] = useState<AnimationType>('random');
+  const [isPlaying, setIsPlaying] = useState(true); // Auto-start animations
   const animationManager = AnimationManager.getInstance();
 
   useEffect(() => {
