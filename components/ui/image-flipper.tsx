@@ -282,49 +282,49 @@ function LinearFlip({
   return (
     <div className={`flex flex-col w-full relative ${className}`}>
       <div className="flex flex-col sm:flex-row w-full gap-0">
-        <div className="w-[10.2%] aspect-[3/4]">
+        <div className="w-[10.2%]">
           <GridCell
             version1Image={linear.version1.l1}
             version2Image={linear.version2.l1}
           />
         </div>
-        <div className="w-[18.9%] aspect-[3/4]">
+        <div className="w-[18.9%]">
           <GridCell
             version1Image={linear.version1.l2}
             version2Image={linear.version2.l2}
           />
         </div>
-        <div className="w-[10.2%] aspect-[3/4]">
+        <div className="w-[10.2%]">
           <GridCell
             version1Image={linear.version1.l3}
             version2Image={linear.version2.l3}
           />
         </div>
-        <div className="w-[10.2%] aspect-[3/4]">
+        <div className="w-[10.2%]">
           <GridCell
             version1Image={linear.version1.l4}
             version2Image={linear.version2.l4}
           />
         </div>
-        <div className="w-[20.2%] aspect-[3/4]">
+        <div className="w-[20.2%]">
           <GridCell
             version1Image={linear.version1.l5}
             version2Image={linear.version2.l5}
           />
         </div>
-        <div className="w-[10.2%] aspect-[3/4]">
+        <div className="w-[10.2%]">
           <GridCell
             version1Image={linear.version1.l6}
             version2Image={linear.version2.l6}
           />
         </div>
-        <div className="w-[10.2%] aspect-[3/4]">
+        <div className="w-[10.2%]">
           <GridCell
             version1Image={linear.version1.l7}
             version2Image={linear.version2.l7}
           />
         </div>
-        <div className="w-[10.2%] aspect-[3/4]">
+        <div className="w-[10.2%]">
           <GridCell
             version1Image={linear.version1.l8}
             version2Image={linear.version2.l8}
@@ -371,7 +371,7 @@ export function ImageFlipper({
         </div>
         <LinearFlip
           linear={linear}
-          className="w-full lg:w-[100%] h-auto mt-[-7px]"
+          className="w-full lg:w-[100%] h-auto mt-[-9px]"
         />
       </div>
     </>
