@@ -101,7 +101,6 @@ class AnimationManager {
   private static instance: AnimationManager;
   private animationTrigger = 0;
   private listeners: Set<(trigger: number) => void> = new Set();
-  private intervalId: NodeJS.Timeout | null = null;
 
   static getInstance(): AnimationManager {
     if (!AnimationManager.instance) {
@@ -117,22 +116,16 @@ class AnimationManager {
 
   triggerAnimation() {
     this.animationTrigger++;
-    this.listeners.forEach(callback => callback(this.animationTrigger));
+    this.listeners.forEach((callback) => callback(this.animationTrigger));
   }
 
   startAutoPlay() {
-    if (this.intervalId) return;
-    // Auto-flip every 15 seconds
-    this.intervalId = setInterval(() => {
-      this.triggerAnimation();
-    }, 15000);
+    // Individual cells now handle their own timing
+    this.triggerAnimation();
   }
 
   stopAutoPlay() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-    }
+    // Cleanup is now handled by individual cells
   }
 }
 
@@ -165,18 +158,20 @@ function URegionalFlipper({
   className?: string;
 }) {
   const cells = [
-    { key: 'l1', version1: u.version1.l1, version2: u.version2.l1, index: 0 },
-    { key: 'l2', version1: u.version1.l2, version2: u.version2.l2, index: 1 },
-    { key: 'l3', version1: u.version1.l3, version2: u.version2.l3, index: 2 },
-    { key: 'm1', version1: u.version1.m1, version2: u.version2.m1, index: 3 },
-    { key: 'm2', version1: u.version1.m2, version2: u.version2.m2, index: 4 },
-    { key: 'r1', version1: u.version1.r1, version2: u.version2.r1, index: 5 },
-    { key: 'r2', version1: u.version1.r2, version2: u.version2.r2, index: 6 },
-    { key: 'r3', version1: u.version1.r3, version2: u.version2.r3, index: 7 },
+    { key: "l1", version1: u.version1.l1, version2: u.version2.l1, index: 0 },
+    { key: "l2", version1: u.version1.l2, version2: u.version2.l2, index: 1 },
+    { key: "l3", version1: u.version1.l3, version2: u.version2.l3, index: 2 },
+    { key: "m1", version1: u.version1.m1, version2: u.version2.m1, index: 3 },
+    { key: "m2", version1: u.version1.m2, version2: u.version2.m2, index: 4 },
+    { key: "r1", version1: u.version1.r1, version2: u.version2.r1, index: 5 },
+    { key: "r2", version1: u.version1.r2, version2: u.version2.r2, index: 6 },
+    { key: "r3", version1: u.version1.r3, version2: u.version2.r3, index: 7 },
   ];
 
   return (
-    <div className={`flex flex-col sm:flex-row md:flex-col lg:flex-row w-full relative ${className}`}>
+    <div
+      className={`flex flex-col sm:flex-row md:flex-col lg:flex-row w-full relative ${className}`}
+    >
       {/* Left Column */}
       <div className="flex flex-row sm:flex-col md:flex-row lg:flex-col w-[26.5%]">
         {cells.slice(0, 3).map((cell) => (
@@ -247,19 +242,21 @@ function MURegionalFlipper({
   className?: string;
 }) {
   const cells = [
-    { key: 'l1', version1: u.version1.l1, version2: u.version2.l1, index: 8 },
-    { key: 'l2', version1: u.version1.l2, version2: u.version2.l2, index: 9 },
-    { key: 'l3', version1: u.version1.l3, version2: u.version2.l3, index: 10 },
-    { key: 'm1', version1: u.version1.m1, version2: u.version2.m1, index: 11 },
-    { key: 'm2', version1: u.version1.m2, version2: u.version2.m2, index: 12 },
-    { key: 'm3', version1: u.version1.m3, version2: u.version2.m3, index: 13 },
-    { key: 'r1', version1: u.version1.r1, version2: u.version2.r1, index: 14 },
-    { key: 'r2', version1: u.version1.r2, version2: u.version2.r2, index: 15 },
-    { key: 'r3', version1: u.version1.r3, version2: u.version2.r3, index: 16 },
+    { key: "l1", version1: u.version1.l1, version2: u.version2.l1, index: 8 },
+    { key: "l2", version1: u.version1.l2, version2: u.version2.l2, index: 9 },
+    { key: "l3", version1: u.version1.l3, version2: u.version2.l3, index: 10 },
+    { key: "m1", version1: u.version1.m1, version2: u.version2.m1, index: 11 },
+    { key: "m2", version1: u.version1.m2, version2: u.version2.m2, index: 12 },
+    { key: "m3", version1: u.version1.m3, version2: u.version2.m3, index: 13 },
+    { key: "r1", version1: u.version1.r1, version2: u.version2.r1, index: 14 },
+    { key: "r2", version1: u.version1.r2, version2: u.version2.r2, index: 15 },
+    { key: "r3", version1: u.version1.r3, version2: u.version2.r3, index: 16 },
   ];
 
   return (
-    <div className={`flex flex-col sm:flex-row md:flex-col lg:flex-row w-full relative ${className}`}>
+    <div
+      className={`flex flex-col sm:flex-row md:flex-col lg:flex-row w-full relative ${className}`}
+    >
       {/* Left Column */}
       <div className="flex flex-row sm:flex-col md:flex-row lg:flex-col w-[25%]">
         {cells.slice(0, 3).map((cell) => (
@@ -332,9 +329,24 @@ function Tflip({
   className?: string;
 }) {
   const cells = [
-    { key: 'u1', version1: seven.version1.u1, version2: seven.version2.u1, index: 17 },
-    { key: 'u2', version1: seven.version1.u2, version2: seven.version2.u2, index: 18 },
-    { key: 'm1', version1: seven.version1.m1, version2: seven.version2.m1, index: 19 },
+    {
+      key: "u1",
+      version1: seven.version1.u1,
+      version2: seven.version2.u1,
+      index: 17,
+    },
+    {
+      key: "u2",
+      version1: seven.version1.u2,
+      version2: seven.version2.u2,
+      index: 18,
+    },
+    {
+      key: "m1",
+      version1: seven.version1.m1,
+      version2: seven.version2.m1,
+      index: 19,
+    },
   ];
 
   return (
@@ -392,14 +404,62 @@ function LinearFlip({
   className?: string;
 }) {
   const cells = [
-    { key: 'l1', version1: linear.version1.l1, version2: linear.version2.l1, index: 20, width: '10.2%' },
-    { key: 'l2', version1: linear.version1.l2, version2: linear.version2.l2, index: 21, width: '18.9%' },
-    { key: 'l3', version1: linear.version1.l3, version2: linear.version2.l3, index: 22, width: '10.2%' },
-    { key: 'l4', version1: linear.version1.l4, version2: linear.version2.l4, index: 23, width: '10.2%' },
-    { key: 'l5', version1: linear.version1.l5, version2: linear.version2.l5, index: 24, width: '20.2%' },
-    { key: 'l6', version1: linear.version1.l6, version2: linear.version2.l6, index: 25, width: '10.2%' },
-    { key: 'l7', version1: linear.version1.l7, version2: linear.version2.l7, index: 26, width: '10.2%' },
-    { key: 'l8', version1: linear.version1.l8, version2: linear.version2.l8, index: 27, width: '10.2%' },
+    {
+      key: "l1",
+      version1: linear.version1.l1,
+      version2: linear.version2.l1,
+      index: 20,
+      width: "10.2%",
+    },
+    {
+      key: "l2",
+      version1: linear.version1.l2,
+      version2: linear.version2.l2,
+      index: 21,
+      width: "18.9%",
+    },
+    {
+      key: "l3",
+      version1: linear.version1.l3,
+      version2: linear.version2.l3,
+      index: 22,
+      width: "10.2%",
+    },
+    {
+      key: "l4",
+      version1: linear.version1.l4,
+      version2: linear.version2.l4,
+      index: 23,
+      width: "10.2%",
+    },
+    {
+      key: "l5",
+      version1: linear.version1.l5,
+      version2: linear.version2.l5,
+      index: 24,
+      width: "20.2%",
+    },
+    {
+      key: "l6",
+      version1: linear.version1.l6,
+      version2: linear.version2.l6,
+      index: 25,
+      width: "10.2%",
+    },
+    {
+      key: "l7",
+      version1: linear.version1.l7,
+      version2: linear.version2.l7,
+      index: 26,
+      width: "10.2%",
+    },
+    {
+      key: "l8",
+      version1: linear.version1.l8,
+      version2: linear.version2.l8,
+      index: 27,
+      width: "10.2%",
+    },
   ];
 
   return (
@@ -429,7 +489,7 @@ export function ImageFlipper({
   // Start animation automatically when component mounts
   useEffect(() => {
     animationManager.startAutoPlay();
-    
+
     // Cleanup on unmount
     return () => {
       animationManager.stopAutoPlay();
@@ -442,11 +502,13 @@ export function ImageFlipper({
       <div className="block lg:hidden w-full">
         <GridCell
           version1Image={{
-            image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/14_Ver+1.webp",
+            image:
+              "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+01/14_Ver+1.webp",
             alt: "About Us Banner",
           }}
           version2Image={{
-            image: "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/14_Ver+2.webp",
+            image:
+              "https://veeville-website.s3.ap-south-1.amazonaws.com/About+Us+Banner/Ver+02/14_Ver+2.webp",
             alt: "About Us Banner Version 2",
           }}
           className="w-full h-auto"
@@ -456,7 +518,9 @@ export function ImageFlipper({
 
       {/* Desktop View (≥ 1024px) */}
       <div className="hidden lg:block">
-        <div className={`flex flex-col lg:flex-row w-full relative -space-y-[1px] lg:-space-x-[1px] lg:space-y-0 ${className}`}>
+        <div
+          className={`flex flex-col lg:flex-row w-full relative -space-y-[1px] lg:-space-x-[1px] lg:space-y-0 ${className}`}
+        >
           <URegionalFlipper u={u1} className="w-full lg:w-[40%] h-auto" />
           {seven && (
             <Tflip seven={seven} className="w-full lg:w-[20.9%] h-auto" />
@@ -487,47 +551,63 @@ function GridCell({
 }: GridCellProps) {
   const [showVersion2, setShowVersion2] = useState(false);
   const [isFlipping, setIsFlipping] = useState(false);
-  const animationManager = AnimationManager.getInstance();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Random delay for each cell to create natural staggered effect
-  const getRandomDelay = useCallback(() => {
-    return Math.random() * 2000; // 0-2 seconds random delay
+  // Get a random interval between 3 and 8 seconds
+  const getRandomInterval = useCallback(() => {
+    return Math.floor(Math.random() * (8000 - 3000) + 3000);
   }, []);
 
+  // Function to handle the flip animation
+  const performFlip = useCallback(() => {
+    setIsFlipping(true);
+
+    // Change image halfway through the flip
+    setTimeout(() => {
+      setShowVersion2((prev) => !prev);
+    }, 800); // Halfway through 1.6s animation
+
+    // End flip animation
+    setTimeout(() => {
+      setIsFlipping(false);
+    }, 1600); // Total flip duration
+  }, []);
+
+  // Start continuous random flipping
   useEffect(() => {
-    const unsubscribe = animationManager.subscribe(() => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+    const startContinuousFlip = () => {
+      // Clear any existing interval
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
       }
 
-      const delay = getRandomDelay();
-      
+      // Initial random delay before starting the continuous cycle
+      const initialDelay = Math.random() * 2000;
       timeoutRef.current = setTimeout(() => {
-        setIsFlipping(true);
-        
-        // Change image halfway through the flip
-        setTimeout(() => {
-          setShowVersion2(prev => !prev);
-        }, 800); // Halfway through 1.6s animation
-        
-        // End flip animation
-        setTimeout(() => {
-          setIsFlipping(false);
-        }, 1600); // Total flip duration
-      }, delay);
-    });
+        performFlip();
 
-    return () => {
-      unsubscribe();
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+        // Start the continuous interval after initial flip
+        intervalRef.current = setInterval(() => {
+          performFlip();
+        }, getRandomInterval());
+      }, initialDelay);
     };
-  }, [animationManager, getRandomDelay]);
+
+    startContinuousFlip();
+
+    // Cleanup function
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [performFlip, getRandomInterval]);
 
   return (
-    <div className={`relative w-full overflow-hidden ${className}`} style={{ perspective: '1000px' }}>
+    <div
+      className={`relative w-full overflow-hidden ${className}`}
+      style={{ perspective: "1000px" }}
+    >
       <motion.div
         className="relative w-full"
         animate={{
@@ -536,15 +616,15 @@ function GridCell({
         transition={{
           duration: 1.6,
           ease: [0.25, 0.46, 0.45, 0.94], // Smooth easing
-          times: [0, 0.5, 1]
+          times: [0, 0.5, 1],
         }}
-        style={{ transformStyle: 'preserve-3d' }}
+        style={{ transformStyle: "preserve-3d" }}
       >
         <motion.img
           src={showVersion2 ? version2Image.image : version1Image.image}
           alt={showVersion2 ? version2Image.alt : version1Image.alt}
           className="w-full object-contain"
-          style={{ backfaceVisibility: 'hidden' }}
+          style={{ backfaceVisibility: "hidden" }}
         />
       </motion.div>
     </div>
