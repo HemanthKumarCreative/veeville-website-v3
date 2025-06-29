@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import FloatingMenu from "@/components/ui/floating-menu";
 
 const navigation = [
   { name: "MARKETING", href: "/work" },
@@ -17,47 +18,14 @@ const navigation = [
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [isAtTop, setIsAtTop] = useState(true);
-  const [isHovering, setIsHovering] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    let hideTimer: NodeJS.Timeout;
-    let scrollTimer: NodeJS.Timeout;
-
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const isCurrentlyAtTop = scrollY < 20;
-
-      setIsScrolled(scrollY > 20);
-      setIsAtTop(isCurrentlyAtTop);
-
-      // Clear any existing timer
-      if (scrollTimer) {
-        clearTimeout(scrollTimer);
-      }
-
-      // If user scrolls from top, show navbar immediately
-      if (!isCurrentlyAtTop) {
-        setIsVisible(true);
-      } else {
-        // If user is at top, hide after delay (unless hovering)
-        scrollTimer = setTimeout(() => {
-          if (isCurrentlyAtTop && !isHovering) {
-            setIsVisible(false);
-          }
-        }, 2000);
-      }
+      setIsVisible(scrollY > 20);
     };
-
-    // Initial hide timer when page loads
-    hideTimer = setTimeout(() => {
-      if (window.scrollY < 20 && !isHovering) {
-        setIsVisible(false);
-      }
-    }, 3000); // Show for 3 seconds initially
 
     window.addEventListener("scroll", handleScroll, { passive: true });
 
@@ -66,51 +34,24 @@ export function Navbar() {
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      if (hideTimer) clearTimeout(hideTimer);
-      if (scrollTimer) clearTimeout(scrollTimer);
     };
-  }, [isHovering]);
-
-  // Handle hover events
-  const handleMouseEnter = () => {
-    setIsHovering(true);
-    setIsVisible(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovering(false);
-    // If at top and not hovering, hide after delay
-    if (isAtTop) {
-      setTimeout(() => {
-        if (isAtTop && !isHovering) {
-          setIsVisible(false);
-        }
-      }, 1000);
-    }
-  };
+  }, []);
 
   return (
     <>
-      {/* Invisible hover zone at top of page */}
-      <div
-        className="fixed top-0 left-0 right-0 h-16 z-40 pointer-events-auto"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      />
+      {/* Add the FloatingMenu component */}
+      <FloatingMenu isVisible={isVisible} />
 
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out pointer-events-none w-full",
-          // Visibility based on state
+          // Visibility based on scroll
           isVisible
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0",
           // Background styling
-          "bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-200/50",
-          isScrolled && "bg-white/95 shadow-md border-gray-200"
+          "bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-200/50"
         )}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         <nav
           className="w-full flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 pointer-events-auto"
@@ -174,7 +115,7 @@ export function Navbar() {
                 className="h-10 w-10 rounded-md text-[#848688] hover:text-[#f05847] hover:bg-gray-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2"
               >
                 <Image
-                  src="https://veeville-website.s3.ap-south-1.amazonaws.com/Gif/Burger+Icon_64x64.gif"
+                  src="/Burger+Icon_64x64.gif"
                   alt="Menu"
                   width={20}
                   height={20}
@@ -202,7 +143,7 @@ export function Navbar() {
                   className="flex-1 px-6 py-6"
                   aria-label="Mobile navigation"
                 >
-                  <ul className="space-y-2">
+                  <ul className="space-y-3">
                     {navigation.map((item) => {
                       const isCurrentPage = pathname === item.href;
 
