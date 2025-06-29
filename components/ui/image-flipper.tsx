@@ -510,64 +510,58 @@ export function ImageFlipper({
   return (
     <>
       {/* Enhanced Animation Controls */}
-      <div className="w-full bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200 py-6 px-4 sm:px-6 lg:px-8">
+      <div className="w-full bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200 py-4 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col space-y-6">
-            {/* Header */}
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Interactive Image Animation</h3>
-              <p className="text-sm text-gray-600">Experience dynamic image transitions with multiple animation styles</p>
-            </div>
-
+          <div className="flex flex-col space-y-4">
             {/* Control Buttons */}
             <div className="flex items-center justify-center space-x-4">
               <motion.button
                 onClick={startAnimation}
                 disabled={isPlaying}
-                className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <Play className="w-4 h-4" />
-                <span className="font-medium">Auto Play</span>
+                <span>Play</span>
               </motion.button>
               
               <motion.button
                 onClick={stopAnimation}
                 disabled={!isPlaying}
-                className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg hover:from-red-600 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg hover:from-red-600 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <Pause className="w-4 h-4" />
-                <span className="font-medium">Pause</span>
+                <span>Pause</span>
               </motion.button>
               
               <motion.button
                 onClick={triggerSingleAnimation}
-                className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <Zap className="w-4 h-4" />
-                <span className="font-medium">Trigger</span>
+                <span>Trigger</span>
               </motion.button>
               
               <motion.button
                 onClick={resetAnimation}
-                className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all duration-200 shadow-lg hover:shadow-xl"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <RotateCcw className="w-4 h-4" />
-                <span className="font-medium">Reset</span>
+                <span>Reset</span>
               </motion.button>
             </div>
 
             {/* Animation Type Selector */}
-            <div className="flex flex-col items-center space-y-4">
+            <div className="flex flex-col items-center space-y-3">
               <span className="text-sm font-medium text-gray-700">Animation Style</span>
-              <div className="flex flex-wrap items-center justify-center gap-3 max-w-4xl">
+              <div className="flex flex-wrap items-center justify-center gap-2 max-w-4xl">
                 {Object.entries(animationConfigs).map(([type, config]) => {
                   const IconComponent = config.icon;
                   const isActive = animationType === type;
@@ -575,9 +569,9 @@ export function ImageFlipper({
                     <motion.button
                       key={type}
                       onClick={() => setAnimationType(type as AnimationType)}
-                      className={`flex items-center space-x-2 px-4 py-3 rounded-lg border-2 transition-all duration-200 ${
+                      className={`flex items-center space-x-2 px-3 py-2 rounded-lg border transition-all duration-200 ${
                         isActive
-                          ? `${config.color} text-white border-transparent shadow-lg scale-105`
+                          ? `${config.color} text-white border-transparent shadow-lg`
                           : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                       }`}
                       title={config.description}
@@ -585,7 +579,7 @@ export function ImageFlipper({
                       whileTap={{ scale: 0.98 }}
                     >
                       <IconComponent className="w-4 h-4" />
-                      <span className="text-sm font-medium">{config.name}</span>
+                      <span className="text-sm">{config.name}</span>
                     </motion.button>
                   );
                 })}
@@ -595,10 +589,10 @@ export function ImageFlipper({
             {/* Status Indicator */}
             <div className="text-center">
               <motion.div
-                className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
+                className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
                   isPlaying 
-                    ? 'bg-green-100 text-green-800 border border-green-200' 
-                    : 'bg-gray-100 text-gray-800 border border-gray-200'
+                    ? 'bg-green-100 text-green-800' 
+                    : 'bg-gray-100 text-gray-800'
                 }`}
                 animate={{ scale: isPlaying ? [1, 1.05, 1] : 1 }}
                 transition={{ duration: 2, repeat: isPlaying ? Infinity : 0 }}
