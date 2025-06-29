@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Play, Pause, RotateCcw, Zap, Clock, Shuffle } from "lucide-react";
+import { Play, Pause, RotateCcw, Zap, Clock, Shuffle, RotateX } from "lucide-react";
 
 interface FlipImage {
   image: string;
@@ -65,7 +65,7 @@ interface ImageFlipperProps {
   className?: string;
 }
 
-type AnimationType = 'sequential' | 'simultaneous' | 'random' | 'wave' | 'spiral';
+type AnimationType = 'sequential' | 'simultaneous' | 'random' | 'wave' | 'spiral' | 'flip';
 
 const animationConfigs = {
   sequential: {
@@ -97,6 +97,12 @@ const animationConfigs = {
     name: 'Spiral',
     description: 'Spiral animation pattern',
     interval: 150,
+  },
+  flip: {
+    icon: RotateX,
+    name: 'Flip',
+    description: '3D flip animation effect',
+    interval: 250,
   },
 };
 
@@ -638,6 +644,7 @@ function GridCell({
   cellIndex,
 }: GridCellProps) {
   const [showVersion2, setShowVersion2] = useState(false);
+  const [isFlipping, setIsFlipping] = useState(false);
 
   const getAnimationDelay = () => {
     const config = animationConfigs[animationType];
@@ -656,6 +663,8 @@ function GridCell({
         const spiralOrder = [0, 1, 2, 5, 8, 7, 6, 3, 4];
         const spiralIndex = spiralOrder.indexOf(cellIndex % 9);
         return spiralIndex !== -1 ? spiralIndex * config.interval : cellIndex * config.interval;
+      case 'flip':
+        return cellIndex * config.interval;
       default:
         return cellIndex * 200;
     }
@@ -666,12 +675,50 @@ function GridCell({
       const delay = getAnimationDelay();
       
       const timer = setTimeout(() => {
-        setShowVersion2(prev => !prev);
+        if (animationType === 'flip') {
+          setIsFlipping(true);
+          // Switch image halfway through the flip
+          setTimeout(() => {
+            setShowVersion2(prev => !prev);
+          }, 300); // Half of the flip duration
+          // End flip animation
+          setTimeout(() => {
+            setIsFlipping(false);
+          }, 600);
+        } else {
+          setShowVersion2(prev => !prev);
+        }
       }, delay);
 
       return () => clearTimeout(timer);
     }
   }, [animationTrigger, animationType, cellIndex]);
+
+  const getAnimationProps = () => {
+    if (animationType === 'flip') {
+      return {
+        style: { perspective: '1000px' },
+        animate: {
+          rotateY: isFlipping ? [0, 180, 0] : 0,
+        },
+        transition: {
+          duration: 0.6,
+          ease: "easeInOut"
+        }
+      };
+    }
+
+    return {
+      animate: {
+        opacity: 1,
+        scale: showVersion2 ? [0.95, 1] : [1, 0.95, 1],
+      },
+      transition: { 
+        duration: 0.6,
+        ease: "easeInOut"
+      }
+    };
+  };
 
   return (
     <div className={`relative w-full overflow-hidden ${className}`}>
@@ -680,14 +727,7 @@ function GridCell({
         alt={showVersion2 ? version2Image.alt : version1Image.alt}
         className="w-full object-contain"
         initial={false}
-        animate={{
-          opacity: 1,
-          scale: showVersion2 ? [0.95, 1] : [1, 0.95, 1],
-        }}
-        transition={{ 
-          duration: 0.6,
-          ease: "easeInOut"
-        }}
+        {...getAnimationProps()}
       />
     </div>
   );
