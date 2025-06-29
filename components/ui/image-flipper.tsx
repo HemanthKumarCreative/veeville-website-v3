@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, Pause, RotateCcw, Zap, Clock, Shuffle, Rotate3D as RotateX, Settings } from "lucide-react";
 
 interface FlipImage {
   image: string;
@@ -10,7 +9,7 @@ interface FlipImage {
 }
 
 interface ImageVersions {
-  u: {
+  u1: {
     version1: {
       l1: FlipImage;
       l2: FlipImage;
@@ -27,6 +26,30 @@ interface ImageVersions {
       l3: FlipImage;
       m1: FlipImage;
       m2: FlipImage;
+      r1: FlipImage;
+      r2: FlipImage;
+      r3: FlipImage;
+    };
+  };
+  u2: {
+    version1: {
+      l1: FlipImage;
+      l2: FlipImage;
+      l3: FlipImage;
+      m1: FlipImage;
+      m2: FlipImage;
+      m3: FlipImage;
+      r1: FlipImage;
+      r2: FlipImage;
+      r3: FlipImage;
+    };
+    version2: {
+      l1: FlipImage;
+      l2: FlipImage;
+      l3: FlipImage;
+      m1: FlipImage;
+      m2: FlipImage;
+      m3: FlipImage;
       r1: FlipImage;
       r2: FlipImage;
       r3: FlipImage;
@@ -73,74 +96,11 @@ interface ImageFlipperProps {
   className?: string;
 }
 
-type AnimationType = 'sequential' | 'simultaneous' | 'random' | 'wave' | 'spiral' | 'gentle' | 'cascade' | 'ripple';
-
-const animationConfigs = {
-  sequential: {
-    icon: Clock,
-    name: 'Sequential',
-    description: 'Images flip one after another very slowly',
-    interval: 1200, // Much slower
-    color: 'bg-blue-500',
-  },
-  simultaneous: {
-    icon: Zap,
-    name: 'Simultaneous',
-    description: 'All images flip at the same time gently',
-    interval: 0,
-    color: 'bg-green-500',
-  },
-  random: {
-    icon: Shuffle,
-    name: 'Random',
-    description: 'Images flip in random order with long delays',
-    interval: 800, // Much slower
-    color: 'bg-purple-500',
-  },
-  wave: {
-    icon: RotateCcw,
-    name: 'Wave',
-    description: 'Gentle wave-like animation from left to right',
-    interval: 600, // Much slower
-    color: 'bg-cyan-500',
-  },
-  spiral: {
-    icon: RotateCcw,
-    name: 'Spiral',
-    description: 'Slow spiral animation from outside to center',
-    interval: 700, // Much slower
-    color: 'bg-orange-500',
-  },
-  gentle: {
-    icon: RotateX,
-    name: 'Gentle Flip',
-    description: 'Very gentle 3D flip with maximum subtlety',
-    interval: 900, // Much slower
-    color: 'bg-red-500',
-  },
-  cascade: {
-    icon: Settings,
-    name: 'Cascade',
-    description: 'Slow cascading effect from top to bottom',
-    interval: 500, // Much slower
-    color: 'bg-indigo-500',
-  },
-  ripple: {
-    icon: RotateCcw,
-    name: 'Ripple',
-    description: 'Gentle ripple effect from center outward',
-    interval: 400, // Much slower
-    color: 'bg-pink-500',
-  },
-};
-
 // Global animation state management
 class AnimationManager {
   private static instance: AnimationManager;
   private animationTrigger = 0;
   private listeners: Set<(trigger: number) => void> = new Set();
-  private isPlaying = false;
-  private animationType: AnimationType = 'random';
   private intervalId: NodeJS.Timeout | null = null;
 
   static getInstance(): AnimationManager {
@@ -162,11 +122,10 @@ class AnimationManager {
 
   startAutoPlay() {
     if (this.intervalId) return;
-    this.isPlaying = true;
-    // Much longer interval between auto-animations
+    // Auto-flip every 15 seconds
     this.intervalId = setInterval(() => {
       this.triggerAnimation();
-    }, 12000); // 12 seconds between animations
+    }, 15000);
   }
 
   stopAutoPlay() {
@@ -174,19 +133,6 @@ class AnimationManager {
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
-    this.isPlaying = false;
-  }
-
-  setAnimationType(type: AnimationType) {
-    this.animationType = type;
-  }
-
-  getAnimationType() {
-    return this.animationType;
-  }
-
-  getIsPlaying() {
-    return this.isPlaying;
   }
 }
 
@@ -478,35 +424,17 @@ export function ImageFlipper({
   className = "",
 }: ImageFlipperProps) {
   const { u1, u2, seven, linear } = aboutUsFlipImages;
-  const [animationType, setAnimationType] = useState<AnimationType>('random');
-  const [isPlaying, setIsPlaying] = useState(false);
   const animationManager = AnimationManager.getInstance();
 
+  // Start animation automatically when component mounts
   useEffect(() => {
-    animationManager.setAnimationType(animationType);
-  }, [animationType, animationManager]);
-
-  const startAnimation = () => {
-    setIsPlaying(true);
     animationManager.startAutoPlay();
-  };
-
-  const stopAnimation = () => {
-    setIsPlaying(false);
-    animationManager.stopAutoPlay();
-  };
-
-  const triggerSingleAnimation = () => {
-    animationManager.triggerAnimation();
-  };
-
-  const resetAnimation = () => {
-    stopAnimation();
-    // Reset all cells to version 1
-    setTimeout(() => {
-      animationManager.triggerAnimation();
-    }, 100);
-  };
+    
+    // Cleanup on unmount
+    return () => {
+      animationManager.stopAutoPlay();
+    };
+  }, [animationManager]);
 
   return (
     <>
@@ -540,117 +468,6 @@ export function ImageFlipper({
           className="w-full lg:w-[100%] h-auto mt-[-7px]"
         />
       </div>
-        {/* Enhanced Animation Controls */}
-      <div className="w-full bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200 py-6 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col space-y-6">
-            {/* Control Buttons */}
-            <div className="flex items-center justify-center space-x-6">
-              <motion.button
-                onClick={startAnimation}
-                disabled={isPlaying}
-                className="flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Play className="w-5 h-5" />
-                <span className="font-medium">Play</span>
-              </motion.button>
-              
-              <motion.button
-                onClick={stopAnimation}
-                disabled={!isPlaying}
-                className="flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Pause className="w-5 h-5" />
-                <span className="font-medium">Pause</span>
-              </motion.button>
-              
-              <motion.button
-                onClick={triggerSingleAnimation}
-                className="flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Zap className="w-5 h-5" />
-                <span className="font-medium">Trigger</span>
-              </motion.button>
-              
-              <motion.button
-                onClick={resetAnimation}
-                className="flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <RotateCcw className="w-5 h-5" />
-                <span className="font-medium">Reset</span>
-              </motion.button>
-            </div>
-
-            {/* Animation Type Selector */}
-            <div className="flex flex-col items-center space-y-4">
-              <span className="text-lg font-semibold text-gray-700">Animation Style</span>
-              <div className="flex flex-wrap items-center justify-center gap-3 max-w-5xl">
-                {Object.entries(animationConfigs).map(([type, config]) => {
-                  const IconComponent = config.icon;
-                  const isActive = animationType === type;
-                  return (
-                    <motion.button
-                      key={type}
-                      onClick={() => setAnimationType(type as AnimationType)}
-                      className={`flex items-center space-x-3 px-4 py-3 rounded-xl border-2 transition-all duration-300 ${
-                        isActive
-                          ? `${config.color} text-white border-transparent shadow-lg transform scale-105`
-                          : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400 hover:bg-gray-50 hover:shadow-md'
-                      }`}
-                      title={config.description}
-                      whileHover={{ scale: isActive ? 1.05 : 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <IconComponent className="w-5 h-5" />
-                      <span className="text-sm font-medium">{config.name}</span>
-                    </motion.button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Status Indicator */}
-            <div className="text-center">
-              <motion.div
-                className={`inline-flex items-center px-6 py-3 rounded-full text-base font-semibold shadow-lg ${
-                  isPlaying 
-                    ? 'bg-green-100 text-green-800 border-2 border-green-300' 
-                    : 'bg-gray-100 text-gray-800 border-2 border-gray-300'
-                }`}
-                animate={{ 
-                  scale: isPlaying ? [1, 1.02, 1] : 1,
-                  boxShadow: isPlaying ? [
-                    "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                    "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-                    "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
-                  ] : "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
-                }}
-                transition={{ duration: 3, repeat: isPlaying ? Infinity : 0 }}
-              >
-                <motion.div 
-                  className={`w-3 h-3 rounded-full mr-3 ${isPlaying ? 'bg-green-500' : 'bg-gray-500'}`}
-                  animate={{ 
-                    opacity: isPlaying ? [1, 0.5, 1] : 1 
-                  }}
-                  transition={{ duration: 2, repeat: isPlaying ? Infinity : 0 }}
-                />
-                {isPlaying ? 'Playing' : 'Stopped'} - {animationConfigs[animationType].name}
-                <span className="ml-2 text-sm opacity-75">
-                  (Auto-play every 12 seconds)
-                </span>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </div>
     </>
   );
 }
@@ -669,73 +486,35 @@ function GridCell({
   cellIndex,
 }: GridCellProps) {
   const [showVersion2, setShowVersion2] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isFlipping, setIsFlipping] = useState(false);
   const animationManager = AnimationManager.getInstance();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const getAnimationDelay = useCallback((animationType: AnimationType, index: number) => {
-    const config = animationConfigs[animationType];
-    
-    switch (animationType) {
-      case 'sequential':
-        return index * config.interval; // 1.2s between each
-      case 'simultaneous':
-        return Math.random() * 500; // Small random delay even for simultaneous
-      case 'random':
-        return Math.random() * 3000; // Up to 3 seconds random delay
-      case 'wave':
-        return (index % 8) * config.interval; // 0.6s between each in wave
-      case 'spiral':
-        const spiralOrder = [0, 1, 2, 5, 8, 7, 6, 3, 4];
-        const spiralIndex = spiralOrder.indexOf(index % 9);
-        return spiralIndex !== -1 ? spiralIndex * config.interval : index * config.interval;
-      case 'gentle':
-        return index * config.interval; // 0.9s between each
-      case 'cascade':
-        const row = Math.floor(index / 8);
-        const col = index % 8;
-        return (row * 800) + (col * config.interval); // Much slower cascade
-      case 'ripple':
-        const centerX = 4;
-        const centerY = 2;
-        const x = index % 8;
-        const y = Math.floor(index / 8);
-        const distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
-        return distance * config.interval;
-      default:
-        return index * 800; // Default slow delay
-    }
+  // Random delay for each cell to create natural staggered effect
+  const getRandomDelay = useCallback(() => {
+    return Math.random() * 2000; // 0-2 seconds random delay
   }, []);
 
   useEffect(() => {
-    const unsubscribe = animationManager.subscribe((trigger) => {
+    const unsubscribe = animationManager.subscribe(() => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
 
-      const animationType = animationManager.getAnimationType();
-      const delay = getAnimationDelay(animationType, cellIndex);
+      const delay = getRandomDelay();
       
       timeoutRef.current = setTimeout(() => {
-        setIsAnimating(true);
+        setIsFlipping(true);
         
-        if (animationType === 'gentle') {
-          // Ultra-gentle 3D flip animation
-          setTimeout(() => {
-            setShowVersion2(prev => !prev);
-          }, 800); // Longer delay before image change
-          setTimeout(() => {
-            setIsAnimating(false);
-          }, 1600); // Much longer animation duration
-        } else {
-          // Regular gentle flip
-          setTimeout(() => {
-            setShowVersion2(prev => !prev);
-          }, 400);
-          setTimeout(() => {
-            setIsAnimating(false);
-          }, 1200); // Longer animation duration
-        }
+        // Change image halfway through the flip
+        setTimeout(() => {
+          setShowVersion2(prev => !prev);
+        }, 800); // Halfway through 1.6s animation
+        
+        // End flip animation
+        setTimeout(() => {
+          setIsFlipping(false);
+        }, 1600); // Total flip duration
       }, delay);
     });
 
@@ -745,73 +524,28 @@ function GridCell({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [animationManager, cellIndex, getAnimationDelay]);
-
-  const getAnimationVariants = () => {
-    const animationType = animationManager.getAnimationType();
-    
-    if (animationType === 'gentle') {
-      return {
-        initial: { rotateY: 0 },
-        animate: { 
-          rotateY: isAnimating ? [0, 90, 0] : 0, // Gentler rotation
-          scale: isAnimating ? [1, 0.98, 1] : 1, // Minimal scale change
-          opacity: isAnimating ? [1, 0.95, 1] : 1, // Subtle opacity change
-        },
-        transition: { 
-          duration: 1.6, // Much longer duration
-          ease: [0.25, 0.46, 0.45, 0.94], // Custom gentle easing
-          times: [0, 0.5, 1]
-        }
-      };
-    }
-
-    return {
-      initial: { scale: 1, opacity: 1 },
-      animate: {
-        scale: isAnimating ? [1, 0.99, 1.005, 1] : 1, // Very subtle scale changes
-        opacity: isAnimating ? [1, 0.95, 1] : 1, // Gentle opacity change
-        rotateX: isAnimating ? [0, 1, -1, 0] : 0, // Minimal rotation
-        y: isAnimating ? [0, -2, 2, 0] : 0, // Subtle vertical movement
-      },
-      transition: { 
-        duration: 1.2, // Longer duration
-        ease: [0.25, 0.46, 0.45, 0.94], // Gentle easing curve
-        times: [0, 0.3, 0.7, 1]
-      }
-    };
-  };
-
-  const variants = getAnimationVariants();
+  }, [animationManager, getRandomDelay]);
 
   return (
-    <div className={`relative w-full overflow-hidden ${className}`} style={{ perspective: '2000px' }}>
+    <div className={`relative w-full overflow-hidden ${className}`} style={{ perspective: '1000px' }}>
       <motion.div
         className="relative w-full"
-        initial={variants.initial}
-        animate={variants.animate}
-        transition={variants.transition}
+        animate={{
+          rotateY: isFlipping ? [0, 90, 0] : 0,
+        }}
+        transition={{
+          duration: 1.6,
+          ease: [0.25, 0.46, 0.45, 0.94], // Smooth easing
+          times: [0, 0.5, 1]
+        }}
+        style={{ transformStyle: 'preserve-3d' }}
       >
         <motion.img
           src={showVersion2 ? version2Image.image : version1Image.image}
           alt={showVersion2 ? version2Image.alt : version1Image.alt}
           className="w-full object-contain"
-          initial={false}
           style={{ backfaceVisibility: 'hidden' }}
         />
-        
-        {/* Ultra-subtle glow effect during animation */}
-        <AnimatePresence>
-          {isAnimating && (
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-blue-400/5 via-purple-400/5 to-pink-400/5 rounded-lg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
-            />
-          )}
-        </AnimatePresence>
       </motion.div>
     </div>
   );
