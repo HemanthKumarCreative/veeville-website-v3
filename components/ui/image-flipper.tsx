@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, Pause, RotateCcw, Zap, Clock, Shuffle, Rotate3D as RotateX, Settings } from "lucide-react";
+import { RotateCcw, Zap, Clock, Shuffle, Rotate3D as RotateX, Settings } from "lucide-react";
 
 interface FlipImage {
   image: string;
@@ -478,86 +478,27 @@ export function ImageFlipper({
 }: ImageFlipperProps) {
   const { u1, u2, seven, linear } = aboutUsFlipImages;
   const [animationType, setAnimationType] = useState<AnimationType>('random');
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true); // Auto-start animations
   const animationManager = AnimationManager.getInstance();
 
   useEffect(() => {
     animationManager.setAnimationType(animationType);
   }, [animationType, animationManager]);
 
-  const startAnimation = () => {
-    setIsPlaying(true);
+  // Auto-start animations when component mounts
+  useEffect(() => {
     animationManager.startAutoPlay();
-  };
-
-  const stopAnimation = () => {
-    setIsPlaying(false);
-    animationManager.stopAutoPlay();
-  };
-
-  const triggerSingleAnimation = () => {
-    animationManager.triggerAnimation();
-  };
-
-  const resetAnimation = () => {
-    stopAnimation();
-    // Reset all cells to version 1
-    setTimeout(() => {
-      animationManager.triggerAnimation();
-    }, 100);
-  };
+    return () => {
+      animationManager.stopAutoPlay();
+    };
+  }, [animationManager]);
 
   return (
     <>
-      {/* Enhanced Animation Controls */}
+      {/* Simplified Animation Controls */}
       <div className="w-full bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200 py-4 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col space-y-4">
-            {/* Control Buttons */}
-            <div className="flex items-center justify-center space-x-4">
-              <motion.button
-                onClick={startAnimation}
-                disabled={isPlaying}
-                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Play className="w-4 h-4" />
-                <span>Play</span>
-              </motion.button>
-              
-              <motion.button
-                onClick={stopAnimation}
-                disabled={!isPlaying}
-                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg hover:from-red-600 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Pause className="w-4 h-4" />
-                <span>Pause</span>
-              </motion.button>
-              
-              <motion.button
-                onClick={triggerSingleAnimation}
-                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Zap className="w-4 h-4" />
-                <span>Trigger</span>
-              </motion.button>
-              
-              <motion.button
-                onClick={resetAnimation}
-                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <RotateCcw className="w-4 h-4" />
-                <span>Reset</span>
-              </motion.button>
-            </div>
-
             {/* Animation Type Selector */}
             <div className="flex flex-col items-center space-y-3">
               <span className="text-sm font-medium text-gray-700">Animation Style</span>
@@ -589,16 +530,12 @@ export function ImageFlipper({
             {/* Status Indicator */}
             <div className="text-center">
               <motion.div
-                className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                  isPlaying 
-                    ? 'bg-green-100 text-green-800' 
-                    : 'bg-gray-100 text-gray-800'
-                }`}
-                animate={{ scale: isPlaying ? [1, 1.05, 1] : 1 }}
-                transition={{ duration: 2, repeat: isPlaying ? Infinity : 0 }}
+                className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800"
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
               >
-                <div className={`w-2 h-2 rounded-full mr-2 ${isPlaying ? 'bg-green-500' : 'bg-gray-500'}`} />
-                {isPlaying ? 'Playing' : 'Stopped'} - {animationConfigs[animationType].name}
+                <div className="w-2 h-2 rounded-full mr-2 bg-green-500" />
+                Active - {animationConfigs[animationType].name}
               </motion.div>
             </div>
           </div>
