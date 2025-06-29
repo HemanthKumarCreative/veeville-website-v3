@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigation = [
@@ -30,7 +30,7 @@ export function Navbar() {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const isCurrentlyAtTop = scrollY < 20;
-      
+
       setIsScrolled(scrollY > 20);
       setIsAtTop(isCurrentlyAtTop);
 
@@ -60,7 +60,7 @@ export function Navbar() {
     }, 3000); // Show for 3 seconds initially
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    
+
     // Initial scroll check
     handleScroll();
 
@@ -92,17 +92,19 @@ export function Navbar() {
   return (
     <>
       {/* Invisible hover zone at top of page */}
-      <div 
+      <div
         className="fixed top-0 left-0 right-0 h-16 z-40 pointer-events-auto"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       />
-      
-      <header 
+
+      <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out pointer-events-none w-full",
           // Visibility based on state
-          isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0",
+          isVisible
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-full opacity-0",
           // Background styling
           "bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-200/50",
           isScrolled && "bg-white/95 shadow-md border-gray-200"
@@ -117,8 +119,8 @@ export function Navbar() {
         >
           {/* Logo - Preserving Veeville brand font */}
           <div className="flex-shrink-0">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               aria-label="Veeville Home"
               className="group inline-block transition-transform duration-200 hover:scale-105"
             >
@@ -129,10 +131,13 @@ export function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8" aria-label="Primary navigation">
+          <nav
+            className="hidden md:flex items-center space-x-8"
+            aria-label="Primary navigation"
+          >
             {navigation.map((item) => {
               const isCurrentPage = pathname === item.href;
-              
+
               return (
                 <Link
                   key={item.name}
@@ -140,16 +145,16 @@ export function Navbar() {
                   className={cn(
                     "relative text-sm font-medium tracking-wide transition-all duration-200",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2 rounded-sm",
-                    
+
                     // Current page styles (red text only - no underline)
-                    isCurrentPage ? [
-                      "text-[#f05847]"
-                    ] : [
-                      // Non-current page styles (gray text + animated underline on hover)
-                      "text-[#848688] hover:text-[#f05847] hover:scale-105",
-                      "after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:w-0 after:bg-[#f05847] after:transition-all after:duration-200 after:rounded-full",
-                      "hover:after:w-full"
-                    ]
+                    isCurrentPage
+                      ? ["text-[#f05847]"]
+                      : [
+                          // Non-current page styles (gray text + animated underline on hover)
+                          "text-[#848688] hover:text-[#f05847] hover:scale-105",
+                          "after:absolute after:bottom-[-4px] after:left-0 after:h-0.5 after:w-0 after:bg-[#f05847] after:transition-all after:duration-200 after:rounded-full",
+                          "hover:after:w-full",
+                        ]
                   )}
                   aria-current={isCurrentPage ? "page" : undefined}
                 >
@@ -162,19 +167,24 @@ export function Navbar() {
           {/* Mobile Menu Button */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 aria-label="Open navigation menu"
                 className="h-10 w-10 rounded-md text-[#848688] hover:text-[#f05847] hover:bg-gray-100 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2"
               >
-                <Menu className="h-5 w-5" />
+                <Image
+                  src="https://veeville-website.s3.ap-south-1.amazonaws.com/Gif/Burger+Icon_64x64.gif"
+                  alt="Menu"
+                  width={20}
+                  height={20}
+                />
               </Button>
             </SheetTrigger>
-            
+
             {/* Mobile Menu */}
-            <SheetContent 
-              side="right" 
+            <SheetContent
+              side="right"
               className="w-[300px] bg-white border-l border-gray-200 p-0"
             >
               <div className="flex flex-col h-full">
@@ -186,13 +196,16 @@ export function Navbar() {
                     </span>
                   </Link>
                 </div>
-                
+
                 {/* Mobile Navigation */}
-                <nav className="flex-1 px-6 py-6" aria-label="Mobile navigation">
+                <nav
+                  className="flex-1 px-6 py-6"
+                  aria-label="Mobile navigation"
+                >
                   <ul className="space-y-2">
                     {navigation.map((item) => {
                       const isCurrentPage = pathname === item.href;
-                      
+
                       return (
                         <li key={item.name}>
                           <Link
@@ -200,16 +213,18 @@ export function Navbar() {
                             className={cn(
                               "block px-4 py-3 text-base font-medium rounded-lg transition-all duration-200",
                               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2",
-                              
+
                               // Current page styles (red text + left border)
-                              isCurrentPage ? [
-                                "text-[#f05847] bg-[#f05847]/10",
-                                "border-l-4 border-l-[#f05847]"
-                              ] : [
-                                // Non-current page styles (clean hover)
-                                "text-[#848688]",
-                                "hover:text-[#f05847] hover:bg-gray-50"
-                              ]
+                              isCurrentPage
+                                ? [
+                                    "text-[#f05847] bg-[#f05847]/10",
+                                    "border-l-4 border-l-[#f05847]",
+                                  ]
+                                : [
+                                    // Non-current page styles (clean hover)
+                                    "text-[#848688]",
+                                    "hover:text-[#f05847] hover:bg-gray-50",
+                                  ]
                             )}
                             onClick={() => setIsOpen(false)}
                             aria-current={isCurrentPage ? "page" : undefined}
