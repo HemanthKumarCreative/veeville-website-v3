@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Play, Pause, RotateCcw, Zap, Clock, Shuffle, RotateX } from "lucide-react";
+import { Play, Pause, RotateCcw, Zap, Clock, Shuffle, Rotate3D as RotateX } from "lucide-react";
 
 interface FlipImage {
   image: string;
