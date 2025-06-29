@@ -29,20 +29,20 @@ interface HomeContent {
 
 export const homeContent: HomeContent = {
   seo: {
-    title: "Welcome to Excellence - Your Company",
+    title: "Welcome to Excellence - Veeville.",
     description: "Discover excellence with our innovative solutions. We provide top-tier services and products designed to elevate your business to new heights.",
     url: "https://yourwebsite.com",
   },
   schema: {
     page: {
       type: "WebPage",
-      name: "Welcome to Excellence - Your Company",
+      name: "Welcome to Excellence - Veeville.",
       description: "Discover excellence with our innovative solutions. We provide top-tier services and products designed to elevate your business to new heights.",
       url: "https://yourwebsite.com",
     },
     organization: {
       type: "Organization",
-      name: "Your Company",
+      name: "Veeville.",
       description: "Excellence in innovation and business solutions",
     },
   },

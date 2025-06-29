@@ -16,8 +16,8 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   metadataBase: new URL("https://yourwebsite.com"),
   title: {
-    default: "Your Company - Welcome to Excellence",
-    template: "%s | Your Company",
+    default: "Veeville. - Welcome to Excellence",
+    template: "%s | Veeville.",
   },
   description:
     "Discover excellence with our innovative solutions. We provide top-tier services and products designed to elevate your business to new heights.",
@@ -28,9 +28,9 @@ export const metadata: Metadata = {
     "professional services",
     "technology",
   ],
-  authors: [{ name: "Your Company Team" }],
-  creator: "Your Company",
-  publisher: "Your Company",
+  authors: [{ name: "Veeville. Team" }],
+  creator: "Veeville.",
+  publisher: "Veeville.",
   robots: {
     index: true,
     follow: true,
@@ -46,8 +46,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://yourwebsite.com",
-    siteName: "Your Company",
-    title: "Your Company - Welcome to Excellence",
+    siteName: "Veeville.",
+    title: "Veeville. - Welcome to Excellence",
     description:
       "Discover excellence with our innovative solutions. We provide top-tier services and products designed to elevate your business to new heights.",
     images: [
@@ -55,13 +55,13 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Your Company - Excellence in Innovation",
+        alt: "Veeville. - Excellence in Innovation",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Your Company - Welcome to Excellence",
+    title: "Veeville. - Welcome to Excellence",
     description: "Discover excellence with our innovative solutions.",
     images: ["/og-image.jpg"],
     creator: "@yourcompany",
@@ -110,7 +110,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "Your Company",
+              name: "Veeville.",
               url: "https://yourwebsite.com",
               logo: "https://yourwebsite.com/logo.png",
               description:

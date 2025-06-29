@@ -306,7 +306,7 @@ export default function EnquiryForm({ content }: EnquiryFormProps) {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Your company name"
+                        placeholder="Veeville. name"
                         {...field}
                         className="w-full"
                       />

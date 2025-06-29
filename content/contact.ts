@@ -135,7 +135,7 @@ export const contactContent: ContactContent = {
       },
       company: {
         label: "Company",
-        placeholder: "Your Company Name"
+        placeholder: "Veeville. Name"
       },
       message: {
         label: "Message *",
