@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 
 interface FlipImage {
   image: string;
@@ -9,29 +9,7 @@ interface FlipImage {
 }
 
 interface ImageVersions {
-  u1: {
-    version1: {
-      l1: FlipImage;
-      l2: FlipImage;
-      l3: FlipImage;
-      m1: FlipImage;
-      m2: FlipImage;
-      r1: FlipImage;
-      r2: FlipImage;
-      r3: FlipImage;
-    };
-    version2: {
-      l1: FlipImage;
-      l2: FlipImage;
-      l3: FlipImage;
-      m1: FlipImage;
-      m2: FlipImage;
-      r1: FlipImage;
-      r2: FlipImage;
-      r3: FlipImage;
-    };
-  };
-  u2: {
+  u: {
     version1: {
       l1: FlipImage;
       l2: FlipImage;
@@ -60,33 +38,25 @@ interface ImageVersions {
       u1: FlipImage;
       u2: FlipImage;
       m1: FlipImage;
+      l1: FlipImage;
+      l2: FlipImage;
+      l3: FlipImage;
+      m2: FlipImage;
+      r1: FlipImage;
+      r2: FlipImage;
+      r3: FlipImage;
     };
     version2: {
       u1: FlipImage;
       u2: FlipImage;
       m1: FlipImage;
-    };
-  };
-  linear: {
-    version1: {
       l1: FlipImage;
       l2: FlipImage;
       l3: FlipImage;
-      l4: FlipImage;
-      l5: FlipImage;
-      l6: FlipImage;
-      l7: FlipImage;
-      l8: FlipImage;
-    };
-    version2: {
-      l1: FlipImage;
-      l2: FlipImage;
-      l3: FlipImage;
-      l4: FlipImage;
-      l5: FlipImage;
-      l6: FlipImage;
-      l7: FlipImage;
-      l8: FlipImage;
+      m2: FlipImage;
+      r1: FlipImage;
+      r2: FlipImage;
+      r3: FlipImage;
     };
   };
 }
@@ -94,39 +64,6 @@ interface ImageVersions {
 interface ImageFlipperProps {
   aboutUsFlipImages: ImageVersions;
   className?: string;
-}
-
-// Global animation state management
-class AnimationManager {
-  private static instance: AnimationManager;
-  private animationTrigger = 0;
-  private listeners: Set<(trigger: number) => void> = new Set();
-
-  static getInstance(): AnimationManager {
-    if (!AnimationManager.instance) {
-      AnimationManager.instance = new AnimationManager();
-    }
-    return AnimationManager.instance;
-  }
-
-  subscribe(callback: (trigger: number) => void) {
-    this.listeners.add(callback);
-    return () => this.listeners.delete(callback);
-  }
-
-  triggerAnimation() {
-    this.animationTrigger++;
-    this.listeners.forEach((callback) => callback(this.animationTrigger));
-  }
-
-  startAutoPlay() {
-    // Individual cells now handle their own timing
-    this.triggerAnimation();
-  }
-
-  stopAutoPlay() {
-    // Cleanup is now handled by individual cells
-  }
 }
 
 function URegionalFlipper({
@@ -140,6 +77,7 @@ function URegionalFlipper({
       l3: FlipImage;
       m1: FlipImage;
       m2: FlipImage;
+
       r1: FlipImage;
       r2: FlipImage;
       r3: FlipImage;
@@ -150,6 +88,7 @@ function URegionalFlipper({
       l3: FlipImage;
       m1: FlipImage;
       m2: FlipImage;
+
       r1: FlipImage;
       r2: FlipImage;
       r3: FlipImage;
@@ -157,60 +96,33 @@ function URegionalFlipper({
   };
   className?: string;
 }) {
-  const cells = [
-    { key: "l1", version1: u.version1.l1, version2: u.version2.l1, index: 0 },
-    { key: "l2", version1: u.version1.l2, version2: u.version2.l2, index: 1 },
-    { key: "l3", version1: u.version1.l3, version2: u.version2.l3, index: 2 },
-    { key: "m1", version1: u.version1.m1, version2: u.version2.m1, index: 3 },
-    { key: "m2", version1: u.version1.m2, version2: u.version2.m2, index: 4 },
-    { key: "r1", version1: u.version1.r1, version2: u.version2.r1, index: 5 },
-    { key: "r2", version1: u.version1.r2, version2: u.version2.r2, index: 6 },
-    { key: "r3", version1: u.version1.r3, version2: u.version2.r3, index: 7 },
-  ];
-
   return (
     <div
       className={`flex flex-col sm:flex-row md:flex-col lg:flex-row w-full relative ${className}`}
     >
       {/* Left Column */}
       <div className="flex flex-row sm:flex-col md:flex-row lg:flex-col w-[26.5%]">
-        {cells.slice(0, 3).map((cell) => (
-          <GridCell
-            key={cell.key}
-            version1Image={cell.version1}
-            version2Image={cell.version2}
-            cellIndex={cell.index}
-          />
-        ))}
+        <GridCell version1Image={u.version1.l1} version2Image={u.version2.l1} />
+        <GridCell version1Image={u.version1.l2} version2Image={u.version2.l2} />
+        <GridCell version1Image={u.version1.l3} version2Image={u.version2.l3} />
       </div>
 
       {/* Middle Column */}
       <div className="flex flex-row sm:flex-col md:flex-row lg:flex-col w-[48.5%]">
-        {cells.slice(3, 5).map((cell) => (
-          <GridCell
-            key={cell.key}
-            version1Image={cell.version1}
-            version2Image={cell.version2}
-            cellIndex={cell.index}
-          />
-        ))}
+        <GridCell version1Image={u.version1.m1} version2Image={u.version2.m1} />
+
+        <GridCell version1Image={u.version1.m2} version2Image={u.version2.m2} />
       </div>
 
       {/* Right Column */}
       <div className="flex flex-row sm:flex-col md:flex-row lg:flex-col w-[26.5%]">
-        {cells.slice(5, 8).map((cell) => (
-          <GridCell
-            key={cell.key}
-            version1Image={cell.version1}
-            version2Image={cell.version2}
-            cellIndex={cell.index}
-          />
-        ))}
+        <GridCell version1Image={u.version1.r1} version2Image={u.version2.r1} />
+        <GridCell version1Image={u.version1.r2} version2Image={u.version2.r2} />
+        <GridCell version1Image={u.version1.r3} version2Image={u.version2.r3} />
       </div>
     </div>
   );
 }
-
 function MURegionalFlipper({
   u,
   className = "",
@@ -241,70 +153,39 @@ function MURegionalFlipper({
   };
   className?: string;
 }) {
-  const cells = [
-    { key: "l1", version1: u.version1.l1, version2: u.version2.l1, index: 8 },
-    { key: "l2", version1: u.version1.l2, version2: u.version2.l2, index: 9 },
-    { key: "l3", version1: u.version1.l3, version2: u.version2.l3, index: 10 },
-    { key: "m1", version1: u.version1.m1, version2: u.version2.m1, index: 11 },
-    { key: "m2", version1: u.version1.m2, version2: u.version2.m2, index: 12 },
-    { key: "m3", version1: u.version1.m3, version2: u.version2.m3, index: 13 },
-    { key: "r1", version1: u.version1.r1, version2: u.version2.r1, index: 14 },
-    { key: "r2", version1: u.version1.r2, version2: u.version2.r2, index: 15 },
-    { key: "r3", version1: u.version1.r3, version2: u.version2.r3, index: 16 },
-  ];
-
   return (
     <div
       className={`flex flex-col sm:flex-row md:flex-col lg:flex-row w-full relative ${className}`}
     >
       {/* Left Column */}
       <div className="flex flex-row sm:flex-col md:flex-row lg:flex-col w-[25%]">
-        {cells.slice(0, 3).map((cell) => (
-          <GridCell
-            key={cell.key}
-            version1Image={cell.version1}
-            version2Image={cell.version2}
-            cellIndex={cell.index}
-          />
-        ))}
+        <GridCell version1Image={u.version1.l1} version2Image={u.version2.l1} />
+        <GridCell version1Image={u.version1.l2} version2Image={u.version2.l2} />
+        <GridCell version1Image={u.version1.l3} version2Image={u.version2.l3} />
       </div>
 
       {/* Middle Column */}
       <div className="flex flex-row sm:flex-col md:flex-row lg:flex-col w-[50%]">
-        <GridCell
-          key="m1"
-          version1Image={cells[3].version1}
-          version2Image={cells[3].version2}
-          cellIndex={cells[3].index}
-        />
+        <GridCell version1Image={u.version1.m1} version2Image={u.version2.m1} />
         <div className="flex flex-row w-full">
           <GridCell
-            key="m2"
-            version1Image={cells[4].version1}
-            version2Image={cells[4].version2}
+            version1Image={u.version1.m2}
+            version2Image={u.version2.m2}
             className="w-[49%]"
-            cellIndex={cells[4].index}
           />
           <GridCell
-            key="m3"
-            version1Image={cells[5].version1}
-            version2Image={cells[5].version2}
+            version1Image={u.version1.m3}
+            version2Image={u.version2.m3}
             className="w-[51%]"
-            cellIndex={cells[5].index}
           />
         </div>
       </div>
 
       {/* Right Column */}
       <div className="flex flex-row sm:flex-col md:flex-row lg:flex-col w-[25%]">
-        {cells.slice(6, 9).map((cell) => (
-          <GridCell
-            key={cell.key}
-            version1Image={cell.version1}
-            version2Image={cell.version2}
-            cellIndex={cell.index}
-          />
-        ))}
+        <GridCell version1Image={u.version1.r1} version2Image={u.version2.r1} />
+        <GridCell version1Image={u.version1.r2} version2Image={u.version2.r2} />
+        <GridCell version1Image={u.version1.r3} version2Image={u.version2.r3} />
       </div>
     </div>
   );
@@ -319,56 +200,51 @@ function Tflip({
       u1: FlipImage;
       u2: FlipImage;
       m1: FlipImage;
+      l1: FlipImage;
+      l2: FlipImage;
+      l3: FlipImage;
+      m2: FlipImage;
+      r1: FlipImage;
+      r2: FlipImage;
+      r3: FlipImage;
     };
     version2: {
       u1: FlipImage;
       u2: FlipImage;
       m1: FlipImage;
+      l1: FlipImage;
+      l2: FlipImage;
+      l3: FlipImage;
+      m2: FlipImage;
+      r1: FlipImage;
+      r2: FlipImage;
+      r3: FlipImage;
     };
   };
   className?: string;
 }) {
-  const cells = [
-    {
-      key: "u1",
-      version1: seven.version1.u1,
-      version2: seven.version2.u1,
-      index: 17,
-    },
-    {
-      key: "u2",
-      version1: seven.version1.u2,
-      version2: seven.version2.u2,
-      index: 18,
-    },
-    {
-      key: "m1",
-      version1: seven.version1.m1,
-      version2: seven.version2.m1,
-      index: 19,
-    },
-  ];
-
   return (
     <div className={`flex flex-col w-full relative ${className}`}>
       {/* First row with 2 images */}
       <div className="flex flex-col sm:flex-row w-full">
-        {cells.slice(0, 2).map((cell, idx) => (
-          <div key={cell.key} className="w-full sm:w-1/2 md:w-[50%]">
-            <GridCell
-              version1Image={cell.version1}
-              version2Image={cell.version2}
-              cellIndex={cell.index}
-            />
-          </div>
-        ))}
+        <div className="w-full sm:w-1/2 md:w-[50%]">
+          <GridCell
+            version1Image={seven.version1.u1}
+            version2Image={seven.version2.u1}
+          />
+        </div>
+        <div className="w-full sm:w-1/2 md:w-[50%]">
+          <GridCell
+            version1Image={seven.version1.u2}
+            version2Image={seven.version2.u2}
+          />
+        </div>
       </div>
       {/* Second row with 1 full-width image */}
       <div className="w-full h-auto md:w-[100%]">
         <GridCell
-          version1Image={cells[2].version1}
-          version2Image={cells[2].version2}
-          cellIndex={cells[2].index}
+          version1Image={seven.version1.m1}
+          version2Image={seven.version2.m1}
         />
       </div>
     </div>
@@ -403,77 +279,57 @@ function LinearFlip({
   };
   className?: string;
 }) {
-  const cells = [
-    {
-      key: "l1",
-      version1: linear.version1.l1,
-      version2: linear.version2.l1,
-      index: 20,
-      width: "10.2%",
-    },
-    {
-      key: "l2",
-      version1: linear.version1.l2,
-      version2: linear.version2.l2,
-      index: 21,
-      width: "18.9%",
-    },
-    {
-      key: "l3",
-      version1: linear.version1.l3,
-      version2: linear.version2.l3,
-      index: 22,
-      width: "10.2%",
-    },
-    {
-      key: "l4",
-      version1: linear.version1.l4,
-      version2: linear.version2.l4,
-      index: 23,
-      width: "10.2%",
-    },
-    {
-      key: "l5",
-      version1: linear.version1.l5,
-      version2: linear.version2.l5,
-      index: 24,
-      width: "20.2%",
-    },
-    {
-      key: "l6",
-      version1: linear.version1.l6,
-      version2: linear.version2.l6,
-      index: 25,
-      width: "10.2%",
-    },
-    {
-      key: "l7",
-      version1: linear.version1.l7,
-      version2: linear.version2.l7,
-      index: 26,
-      width: "10.2%",
-    },
-    {
-      key: "l8",
-      version1: linear.version1.l8,
-      version2: linear.version2.l8,
-      index: 27,
-      width: "10.2%",
-    },
-  ];
-
   return (
     <div className={`flex flex-col w-full relative ${className}`}>
       <div className="flex flex-col sm:flex-row w-full gap-0">
-        {cells.map((cell) => (
-          <div key={cell.key} style={{ width: cell.width }}>
-            <GridCell
-              version1Image={cell.version1}
-              version2Image={cell.version2}
-              cellIndex={cell.index}
-            />
-          </div>
-        ))}
+        <div className="w-[10.2%] aspect-[3/4]">
+          <GridCell
+            version1Image={linear.version1.l1}
+            version2Image={linear.version2.l1}
+          />
+        </div>
+        <div className="w-[18.9%] aspect-[3/4]">
+          <GridCell
+            version1Image={linear.version1.l2}
+            version2Image={linear.version2.l2}
+          />
+        </div>
+        <div className="w-[10.2%] aspect-[3/4]">
+          <GridCell
+            version1Image={linear.version1.l3}
+            version2Image={linear.version2.l3}
+          />
+        </div>
+        <div className="w-[10.2%] aspect-[3/4]">
+          <GridCell
+            version1Image={linear.version1.l4}
+            version2Image={linear.version2.l4}
+          />
+        </div>
+        <div className="w-[20.2%] aspect-[3/4]">
+          <GridCell
+            version1Image={linear.version1.l5}
+            version2Image={linear.version2.l5}
+          />
+        </div>
+        <div className="w-[10.2%] aspect-[3/4]">
+          <GridCell
+            version1Image={linear.version1.l6}
+            version2Image={linear.version2.l6}
+          />
+        </div>
+        <div className="w-[10.2%] aspect-[3/4]">
+          <GridCell
+            version1Image={linear.version1.l7}
+            version2Image={linear.version2.l7}
+          />
+        </div>
+        <div className="w-[10.2%] aspect-[3/4]">
+          <GridCell
+            version1Image={linear.version1.l8}
+            version2Image={linear.version2.l8}
+          />
+        </div>
       </div>
     </div>
   );
@@ -484,18 +340,6 @@ export function ImageFlipper({
   className = "",
 }: ImageFlipperProps) {
   const { u1, u2, seven, linear } = aboutUsFlipImages;
-  const animationManager = AnimationManager.getInstance();
-
-  // Start animation automatically when component mounts
-  useEffect(() => {
-    animationManager.startAutoPlay();
-
-    // Cleanup on unmount
-    return () => {
-      animationManager.stopAutoPlay();
-    };
-  }, [animationManager]);
-
   return (
     <>
       {/* Mobile View (< 1024px) */}
@@ -512,10 +356,8 @@ export function ImageFlipper({
             alt: "About Us Banner Version 2",
           }}
           className="w-full h-auto"
-          cellIndex={0}
         />
       </div>
-
       {/* Desktop View (≥ 1024px) */}
       <div className="hidden lg:block">
         <div
@@ -540,93 +382,88 @@ interface GridCellProps {
   version1Image: FlipImage;
   version2Image: FlipImage;
   className?: string;
-  cellIndex: number;
 }
 
 function GridCell({
   version1Image,
   version2Image,
   className = "",
-  cellIndex,
 }: GridCellProps) {
-  const [showVersion2, setShowVersion2] = useState(false);
-  const [isFlipping, setIsFlipping] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const randomDelay = useRef(Math.random() * 10000); // Random delay between 0-10s
 
-  // Get a random interval between 3 and 8 seconds
-  const getRandomInterval = useCallback(() => {
-    return Math.floor(Math.random() * (8000 - 3000) + 3000);
-  }, []);
-
-  // Function to handle the flip animation
-  const performFlip = useCallback(() => {
-    setIsFlipping(true);
-
-    // Change image halfway through the flip
-    setTimeout(() => {
-      setShowVersion2((prev) => !prev);
-    }, 800); // Halfway through 1.6s animation
-
-    // End flip animation
-    setTimeout(() => {
-      setIsFlipping(false);
-    }, 1600); // Total flip duration
-  }, []);
-
-  // Start continuous random flipping
   useEffect(() => {
-    const startContinuousFlip = () => {
-      // Clear any existing interval
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-
-      // Initial random delay before starting the continuous cycle
-      const initialDelay = Math.random() * 2000;
-      timeoutRef.current = setTimeout(() => {
-        performFlip();
-
-        // Start the continuous interval after initial flip
-        intervalRef.current = setInterval(() => {
-          performFlip();
-        }, getRandomInterval());
-      }, initialDelay);
+    const startAnimation = () => {
+      setIsAnimating(true);
+      // Reset after animation completes
+      setTimeout(() => {
+        setIsAnimating(false);
+        // Set next random delay
+        randomDelay.current = Math.random() * 10000;
+      }, 3000); // Animation duration
     };
 
-    startContinuousFlip();
+    const interval = setInterval(() => {
+      setTimeout(startAnimation, randomDelay.current);
+    }, 15000); // Base cycle duration
 
-    // Cleanup function
+    // Initial animation with random delay
+    const initialTimeout = setTimeout(startAnimation, randomDelay.current);
+
     return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      clearInterval(interval);
+      clearTimeout(initialTimeout);
     };
-  }, [performFlip, getRandomInterval]);
+  }, []);
 
   return (
-    <div
-      className={`relative w-full overflow-hidden ${className}`}
-      style={{ perspective: "1000px" }}
-    >
-      <motion.div
-        className="relative w-full"
-        animate={{
-          rotateY: isFlipping ? [0, 90, 0] : 0,
-        }}
-        transition={{
-          duration: 1.6,
-          ease: [0.25, 0.46, 0.45, 0.94], // Smooth easing
-          times: [0, 0.5, 1],
-        }}
-        style={{ transformStyle: "preserve-3d" }}
-      >
-        <motion.img
-          src={showVersion2 ? version2Image.image : version1Image.image}
-          alt={showVersion2 ? version2Image.alt : version1Image.alt}
-          className="w-full object-contain"
-          style={{ backfaceVisibility: "hidden" }}
-        />
-      </motion.div>
+    <div className={`relative w-full overflow-hidden ${className}`}>
+      {/* Base image for layout */}
+      <img
+        src={version1Image.image}
+        alt={version1Image.alt}
+        className="w-full object-contain invisible"
+      />
+
+      {/* Animation container */}
+      <div className="absolute inset-0 w-[200%] -left-0">
+        {/* Version 1 Image */}
+        <motion.div
+          className="absolute w-1/2 left-0"
+          animate={{
+            x: isAnimating ? "100%" : "0%",
+          }}
+          transition={{
+            duration: 2,
+            ease: "easeInOut",
+          }}
+        >
+          <img
+            src={version1Image.image}
+            alt={version1Image.alt}
+            className="w-full object-contain"
+          />
+        </motion.div>
+
+        {/* Version 2 Image */}
+        <motion.div
+          className="absolute w-1/2 left-0"
+          initial={{ x: "-100%" }}
+          animate={{
+            x: isAnimating ? "0%" : "-100%",
+          }}
+          transition={{
+            duration: 2,
+            ease: "easeInOut",
+          }}
+        >
+          <img
+            src={version2Image.image}
+            alt={version2Image.alt}
+            className="w-full object-contain"
+          />
+        </motion.div>
+      </div>
     </div>
   );
 }
