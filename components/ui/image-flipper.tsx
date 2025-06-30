@@ -371,7 +371,7 @@ export function ImageFlipper({
         </div>
         <LinearFlip
           linear={linear}
-          className="w-full lg:w-[100%] h-auto mt-[-7px]"
+          className="w-full lg:w-[100%] h-auto mt-[-9px]"
         />
       </div>
     </>
