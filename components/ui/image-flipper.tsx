@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 interface FlipImage {
@@ -389,24 +389,81 @@ function GridCell({
   version2Image,
   className = "",
 }: GridCellProps) {
-  const [isHovering, setIsHovering] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const randomDelay = useRef(Math.random() * 10000); // Random delay between 0-10s
+
+  useEffect(() => {
+    const startAnimation = () => {
+      setIsAnimating(true);
+      // Reset after animation completes
+      setTimeout(() => {
+        setIsAnimating(false);
+        // Set next random delay
+        randomDelay.current = Math.random() * 10000;
+      }, 3000); // Animation duration
+    };
+
+    const interval = setInterval(() => {
+      setTimeout(startAnimation, randomDelay.current);
+    }, 15000); // Base cycle duration
+
+    // Initial animation with random delay
+    const initialTimeout = setTimeout(startAnimation, randomDelay.current);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(initialTimeout);
+    };
+  }, []);
 
   return (
-    <div
-      className={`relative w-full overflow-hidden ${className}`}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
-      <motion.img
-        src={isHovering ? version2Image.image : version1Image.image}
-        alt={isHovering ? version2Image.alt : version1Image.alt}
-        className="w-full object-contain"
-        initial={false}
-        animate={{
-          opacity: 1,
-        }}
-        transition={{ duration: 0.3 }}
+    <div className={`relative w-full overflow-hidden ${className}`}>
+      {/* Base image for layout */}
+      <img
+        src={version1Image.image}
+        alt={version1Image.alt}
+        className="w-full object-contain invisible"
       />
+
+      {/* Animation container */}
+      <div className="absolute inset-0 w-[200%] -left-0">
+        {/* Version 1 Image */}
+        <motion.div
+          className="absolute w-1/2 left-0"
+          animate={{
+            x: isAnimating ? "100%" : "0%",
+          }}
+          transition={{
+            duration: 2,
+            ease: "easeInOut",
+          }}
+        >
+          <img
+            src={version1Image.image}
+            alt={version1Image.alt}
+            className="w-full object-contain"
+          />
+        </motion.div>
+
+        {/* Version 2 Image */}
+        <motion.div
+          className="absolute w-1/2 left-0"
+          initial={{ x: "-100%" }}
+          animate={{
+            x: isAnimating ? "0%" : "-100%",
+          }}
+          transition={{
+            duration: 2,
+            ease: "easeInOut",
+          }}
+        >
+          <img
+            src={version2Image.image}
+            alt={version2Image.alt}
+            className="w-full object-contain"
+          />
+        </motion.div>
+      </div>
     </div>
   );
 }
