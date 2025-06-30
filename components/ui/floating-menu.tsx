@@ -115,12 +115,12 @@ const FloatingMenu: React.FC<{ isVisible: boolean }> = ({ isVisible }) => {
             aria-label="Show navigation menu"
             onClick={() => setIsOpen(!isOpen)}
             className={cn(
-              "fixed top-4 left-4 z-50 h-12 w-12 rounded-lg",
-              "text-[#848688] hover:text-[#f05847] bg-white/90 backdrop-blur-sm",
+              "fixed top-4 right-4 z-50 h-12 w-12 rounded-lg",
+              "text-[#848688] hover:text-[#f05847] bg-gray-200 backdrop-blur-sm",
               "transition-all duration-500 ease-out",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05847] focus-visible:ring-offset-2",
               "hidden md:flex items-center justify-center",
-              "shadow-lg hover:shadow-xl transform hover:scale-105",
+              "shadow-lg hover:shadow-xl transform hover:scale-101 hover:bg-[#f05847]",
               isVisible ? "opacity-0 pointer-events-none" : "opacity-100"
             )}
           >
@@ -131,11 +131,11 @@ const FloatingMenu: React.FC<{ isVisible: boolean }> = ({ isVisible }) => {
               />
             ) : (
               <Image
-                src="https://veeville-website.s3.ap-south-1.amazonaws.com/Gif/Burger+Icon_64x64.gif"
+                src="https://veeville-website.s3.ap-south-1.amazonaws.com/Gif/Bob+(1).png"
                 alt="Menu"
-                width={20}
-                height={20}
-                className="transform transition-transform duration-300 hover:scale-110"
+                width={35}
+                height={35}
+                className="transform transition-transform duration-300 hover:scale-110 "
               />
             )}
           </Button>
